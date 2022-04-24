@@ -1,1 +1,6 @@
 .vscode/launch.json
+web/static/css
+web/static/js
+web/static/favicon.ico
+web/static/index.html
+go.sum

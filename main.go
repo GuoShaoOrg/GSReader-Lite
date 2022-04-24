@@ -1,6 +1,8 @@
 package main
 
+import "gs-reader-lite/server"
+
 
 func main(){
-	print("hello GS Reader lite")
+	server.Run()
 }
