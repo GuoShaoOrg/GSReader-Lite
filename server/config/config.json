@@ -1,0 +1,6 @@
+{
+  "database": {
+    "debug": true,
+    "type": "sqlite"
+  }
+}

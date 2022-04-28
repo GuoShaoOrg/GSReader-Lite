@@ -11,9 +11,14 @@ import (
 func InitRouter() {
 	router := gin.Default()
 	router.Use(middlewear.StaticRedirect())
+	router.Use(middlewear.AuthToken())
 	initStaticWebRes(router)
 	initV1API(router)
-	router.Run(":8080")
+	err := router.Run(":8080")
+	if err != nil {
+		panic(err)
+		return
+	}
 }
 
 func initStaticWebRes(router *gin.Engine){
