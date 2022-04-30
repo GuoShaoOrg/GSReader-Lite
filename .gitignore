@@ -13,3 +13,4 @@ go.sum
 .idea/inspectionProfiles/Project_Default.xml
 .vscode/settings.json
 db.sqlite3
+log
