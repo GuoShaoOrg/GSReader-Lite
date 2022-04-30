@@ -24,7 +24,9 @@ func (ctl *Controller) RegisterUser(req *gin.Context) {
 
 func (ctl *Controller) Login(req *gin.Context) {
 	var reqData *LoginReqData
-	ctl.BaseController.Validate(req, &reqData)
+	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+		return
+	}
 
 	userInfo, err := user.Login(reqData.Password, reqData.Email, reqData.Mobile)
 	if err != nil {

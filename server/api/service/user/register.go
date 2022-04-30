@@ -3,26 +3,34 @@ package user
 import (
 	"context"
 	"errors"
+	"gs-reader-lite/server/component"
+	middleware "gs-reader-lite/server/middlewear"
+
 	"github.com/gogf/gf/v2/crypto/gmd5"
 	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/util/guid"
-	"gs-reader-lite/server/component"
-	middleware "gs-reader-lite/server/middlewear"
+	"gorm.io/gorm"
 
 	"gs-reader-lite/server/model"
 	"gs-reader-lite/server/model/biz"
 )
 
 func RegisterUserByPassword(username, password, email, mobile string) (*biz.UserInfo, error) {
+	var exists bool
+	ctx := context.Background()
 	if email == "" {
-		result, _ := component.GetDatabase().Model("user_info").Where("mobile", mobile).All()
-		if result.Size() != 0 {
+		result := component.GetDatabase().Model(&model.UserInfo{}).Where("mobile", mobile).Find(&exists)
+		if result.Error != nil && errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return nil, errors.New("该手机号已经注册")
+		} else {
+			component.Logger().Error(ctx, result.Error)
 		}
 	} else if mobile == "" {
-		result, _ := component.GetDatabase().Model("user_info").Where("email", email).All()
-		if result.Size() != 0 {
+		result := component.GetDatabase().Model(&model.UserInfo{}).Where("email", email).Find(&exists)
+		if result.Error != nil && errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return nil, errors.New("该邮箱已经注册")
+		} else {
+			component.Logger().Error(ctx, result.Error)
 		}
 	}
 	cryptoPwd, _ := gmd5.Encrypt(password)
@@ -36,9 +44,9 @@ func RegisterUserByPassword(username, password, email, mobile string) (*biz.User
 		UpdateDate: createDate,
 		Uid:        guid.S(),
 	}
-	ctx := context.Background()
-	_, err := component.GetDatabase().Insert(ctx, "user_info", userInfoModel)
-	if err != nil {
+	result := component.GetDatabase().Create(&userInfoModel)
+	if result.Error != nil {
+		component.Logger().Error(ctx, result.Error)
 		return nil, errors.New("发生了一些问题")
 	}
 
@@ -60,6 +68,7 @@ func RegisterUserByPassword(username, password, email, mobile string) (*biz.User
 	}
 	token, err := middleware.CreateToken(tokenMode)
 	if err != nil {
+		component.Logger().Error(ctx, err.Error())
 		return nil, errors.New("发生了一些问题")
 	}
 	bizUseInfo.Token = token
@@ -70,16 +79,19 @@ func RegisterUserByPassword(username, password, email, mobile string) (*biz.User
 func Login(password, email string, mobile int) (*biz.UserInfo, error) {
 	cryptoPwd, _ := gmd5.Encrypt(password)
 	userInfoModel := model.UserInfo{}
+	ctx := context.Background()
 
 	if email == "" {
-		err := component.GetDatabase().Model("user_info").Where("mobile", mobile).Where("password", cryptoPwd).Scan(&userInfoModel)
-		if err != nil {
-			return nil, err
+		result := component.GetDatabase().Model(&model.UserInfo{}).Where("mobile", mobile).Where("password", cryptoPwd).Scan(&userInfoModel)
+		if result.Error != nil {
+			component.Logger().Error(ctx, result.Error)
+			return nil, result.Error
 		}
 	} else if mobile == 0 {
-		err := component.GetDatabase().Model("user_info").Where("email", email).Where("password", cryptoPwd).Scan(&userInfoModel)
-		if err != nil {
-			return nil, err
+		result := component.GetDatabase().Model(&model.UserInfo{}).Where("email", email).Where("password", cryptoPwd).Scan(&userInfoModel)
+		if result.Error != nil {
+			component.Logger().Error(ctx, result.Error)
+			return nil, result.Error
 		}
 	}
 
@@ -101,6 +113,7 @@ func Login(password, email string, mobile int) (*biz.UserInfo, error) {
 	}
 	token, err := middleware.CreateToken(tokenMode)
 	if err != nil {
+		component.Logger().Error(ctx, err.Error())
 		return nil, errors.New("发生了一些问题")
 	}
 	bizUseInfo.Token = token

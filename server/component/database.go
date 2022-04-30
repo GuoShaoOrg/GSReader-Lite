@@ -1,73 +1,57 @@
 package component
 
 import (
+	"context"
 	"database/sql"
 
-	_ "github.com/gogf/gf/contrib/drivers/sqlite/v2"
-	_ "github.com/mattn/go-sqlite3"
-
-	"context"
-	"os"
-
-	"github.com/gogf/gf/v2/database/gdb"
-	"github.com/gogf/gf/v2/os/gcfg"
 	"github.com/gogf/gf/v2/os/gfile"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 var (
-	databaseInstance gdb.DB
+	databaseInstance *gorm.DB
 )
 
 func InitDatabase() {
 	var err error
-	createSQLITEIfNotExist()
-	setDatabaseConfig()
-	databaseInstance, err = gdb.NewByGroup("default")
 	ctx := context.Background()
+	createSQLITEIfNotExist(ctx)
+	setDatabaseConfig(ctx)
 	if err != nil {
 		Logger().Error(ctx, err)
 		panic(err)
 	}
 }
 
-func setDatabaseConfig() {
-	var (
-		config *gcfg.Config
-	)
-	config = gcfg.Instance()
-	pwd, _ := os.Getwd()
-	config.GetAdapter().(*gcfg.AdapterFile).SetFileName(pwd + "/server/config/config.json")
-	ctx := context.Background()
-	debug, _ := config.Get(ctx, "database.debug")
-	dbType, _ := config.Get(ctx, "database.type")
-	gdb.SetConfig(gdb.Config{
-		"default": gdb.ConfigGroup{
-			gdb.ConfigNode{
-				Debug:  debug.Bool(),
-				Type:   dbType.String(),
-				Link:   "sqlite:" + pwd + "/db.sqlite3",
-				Weight: 100,
-			},
-		},
-	})
+func setDatabaseConfig(ctx context.Context) {
+	var err error
+
+	dbConfig := gorm.Config{}
+	databaseInstance, err = gorm.Open(sqlite.Open("./db.sqlite3"), &dbConfig)
+	if err != nil {
+		Logger().Error(ctx, err)
+	}
 }
 
-func createSQLITEIfNotExist() {
+func createSQLITEIfNotExist(ctx context.Context) {
 	if gfile.Exists("./db.sqlite3") {
 		return
 	}
 	db, err := sql.Open("sqlite3", "./db.sqlite3")
 	if err != nil {
+		Logger().Error(ctx, err)
 		panic(err)
 	}
     sql_table := gfile.GetContents("./server/config/model.sql")
 
     _, err = db.Exec(sql_table)
 		if err != nil {
+		Logger().Error(ctx, err)
 		panic(err)
 	}
 }
 
-func GetDatabase() gdb.DB {
+func GetDatabase() *gorm.DB {
 	return databaseInstance
 }

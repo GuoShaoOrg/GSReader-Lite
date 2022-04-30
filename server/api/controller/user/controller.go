@@ -21,6 +21,6 @@ type RegisterReqData struct {
 type LoginReqData struct {
 	Username string
 	Password string `json:"password" binding:"required"`
-	Email    string `json:"email" binding:"required-without=Mobile"`
-	Mobile   int    `json:"mobile" binding:"required-without=Email"`
+	Email    string `json:"email" binding:"required_without=Mobile"`
+	Mobile   int    `json:"mobile" binding:"required_without=Email"`
 }
