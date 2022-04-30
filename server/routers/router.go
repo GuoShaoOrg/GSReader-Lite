@@ -2,6 +2,7 @@ package routers
 
 import (
 	"context"
+	"gs-reader-lite/server/api/controller/feed"
 	"gs-reader-lite/server/api/controller/user"
 	"gs-reader-lite/server/component"
 	"gs-reader-lite/server/middlewear"
@@ -30,6 +31,9 @@ func initStaticWebRes(router *gin.Engine) {
 
 func initV1API(router *gin.Engine) {
 	v1 := router.Group("/v1/api")
+	authorized := v1.Group("/")
+	authorized.Use(middlewear.AuthToken())
+
 	userGroup := v1.Group("/user")
 	{
 		userCtl := user.UsrCtl
@@ -37,13 +41,25 @@ func initV1API(router *gin.Engine) {
 		userGroup.POST("/login", userCtl.Login)
 	}
 
-	authorized := v1.Group("/")
-	authorized.Use(middlewear.AuthToken())
+	feedGroup := authorized.Group("/feed")
 	{
-		authorized.GET("/feed/item_by_channel_id", func(c *gin.Context) {
-			c.JSON(200, gin.H{
-				"message": "item_by_channel_id",
-			})
-		})
+		// feed channel
+		feedGroup.GET("/tag", feed.FeedCtl.GetFeedTag)
+		feedGroup.GET("/channel_by_tag", feed.FeedCtl.GetFeedChannelByTag)
+		feedGroup.GET("/channel_info_by_id", feed.FeedCtl.GetFeedChannelInfoByChannelAndUserId)
+		feedGroup.GET("/channel_catalog_list_by_tag", feed.FeedCtl.GetFeedChannelCatalogListByTag)
+		feedGroup.GET("/channel_by_user_id", feed.FeedCtl.GetSubFeedChannelByUserId)
+		feedGroup.POST("/sub_channel_by_user_id", feed.FeedCtl.SubChannelByUserIdAndChannelId)
+		feedGroup.GET("/channel_catalog_list_by_user_id", feed.FeedCtl.GetFeedChannelCatalogListByUserId)
+		// feed item
+		feedGroup.GET("/latest", feed.FeedCtl.GetLatestFeedItem)
+		feedGroup.GET("/random", feed.FeedCtl.GetRandomFeedItem)
+		feedGroup.GET("/search", feed.FeedCtl.SearchFeedItem)
+		feedGroup.GET("/item_by_user_id", feed.FeedCtl.GetFeedItemListByUserId)
+		feedGroup.GET("/item_by_channel_id", feed.FeedCtl.GetFeedItemByChannelId)
+		feedGroup.GET("/item_by_item_id", feed.FeedCtl.GetFeedItemByItemId)
+		feedGroup.POST("/mark_feed_item_by_user_id", feed.FeedCtl.MarkFeedItemByUserId)
+		feedGroup.GET("/mark_feed_item_by_user_id", feed.FeedCtl.MarkFeedItemByUserId)
+		feedGroup.GET("/link/uid", feed.FeedCtl.AddFeedChannelByLink)
 	}
 }
