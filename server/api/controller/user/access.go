@@ -1,14 +1,17 @@
 package user
 
 import (
-	"github.com/gin-gonic/gin"
 	"gs-reader-lite/server/api/controller"
 	"gs-reader-lite/server/api/service/user"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (ctl *Controller) RegisterUser(req *gin.Context) {
 	var reqData *RegisterReqData
-	ctl.BaseController.Validate(req, &reqData)
+	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+		return
+	}
 
 	userInfo, err := user.RegisterUserByPassword(reqData.Username, reqData.Password, reqData.Email, reqData.Mobile)
 	if err != nil {
