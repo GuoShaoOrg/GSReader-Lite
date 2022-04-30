@@ -14,3 +14,4 @@ go.sum
 .vscode/settings.json
 db.sqlite3
 log
+*.sql
