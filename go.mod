@@ -9,6 +9,12 @@ require (
 )
 
 require (
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
+	gorm.io/gorm v1.23.4 // indirect
+)
+
+require (
 	github.com/BurntSushi/toml v0.4.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/clbanning/mxj/v2 v2.5.5 // indirect
@@ -30,7 +36,7 @@ require (
 	github.com/mattn/go-colorable v0.1.9 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mattn/go-runewidth v0.0.9 // indirect
-	github.com/mattn/go-sqlite3 v1.14.10 // indirect
+	github.com/mattn/go-sqlite3 v1.14.12 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
 	github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
@@ -45,4 +51,5 @@ require (
 	google.golang.org/protobuf v1.26.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gorm.io/driver/sqlite v1.3.2
 )
