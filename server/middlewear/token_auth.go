@@ -3,13 +3,14 @@ package middlewear
 import (
 	"context"
 	"encoding/json"
-	"github.com/gin-gonic/gin"
-	"github.com/gogf/gf/v2/crypto/gaes"
-	"github.com/gogf/gf/v2/encoding/gbase64"
 	"gs-reader-lite/server/api/controller"
 	"gs-reader-lite/server/component"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	"github.com/gogf/gf/v2/crypto/gaes"
+	"github.com/gogf/gf/v2/encoding/gbase64"
 )
 
 type TokenModel struct {
