@@ -1,6 +1,8 @@
 package component
 
 import (
+	"os"
+
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/glog"
 )
@@ -14,8 +16,10 @@ func Logger() *glog.Logger {
 	}
 
 	logger = glog.New()
+	pwd, _ := os.Getwd()
+	logPath := pwd + "/log"
 	_ = logger.SetConfigWithMap(g.Map{
-		"path":     "/var/log",
+		"path":     logPath,
 		"level":    "all",
 		"stdout":   false,
 		"StStatus": 0,
