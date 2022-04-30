@@ -15,9 +15,9 @@ func (ctl *Controller) RegisterUser(req *gin.Context) {
 
 	userInfo, err := user.RegisterUserByPassword(reqData.Username, reqData.Password, reqData.Email, reqData.Mobile)
 	if err != nil {
-		controller.JsonExist(req, 1, err.Error())
+		controller.JsonExit(req, 1, err.Error())
 	} else {
-		controller.JsonExist(req, 1, "success", userInfo)
+		controller.JsonExit(req, 1, "success", userInfo)
 	}
 
 }
@@ -30,8 +30,8 @@ func (ctl *Controller) Login(req *gin.Context) {
 
 	userInfo, err := user.Login(reqData.Password, reqData.Email, reqData.Mobile)
 	if err != nil {
-		controller.JsonExist(req, 1, "账号或密码不正确")
+		controller.JsonExit(req, 1, "账号或密码不正确")
 	} else {
-		controller.JsonExist(req, 1, "success", userInfo)
+		controller.JsonExit(req, 1, "success", userInfo)
 	}
 }
