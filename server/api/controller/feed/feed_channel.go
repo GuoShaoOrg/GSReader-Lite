@@ -10,7 +10,7 @@ import (
 
 func (ctl *Controller) GetFeedChannelByTag(req *gin.Context) {
 	var reqData *ChannelReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
 	}
 	if reqData.Size == 0 {
@@ -22,7 +22,7 @@ func (ctl *Controller) GetFeedChannelByTag(req *gin.Context) {
 
 func (ctl *Controller) SubChannelByUserIdAndChannelId(req *gin.Context) {
 	var reqData *SubChannelByUserIdAndChannelIdReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateJson(req, &reqData); err != nil {
 		return
 	}
 
@@ -37,7 +37,7 @@ func (ctl *Controller) SubChannelByUserIdAndChannelId(req *gin.Context) {
 
 func (ctl *Controller) GetSubFeedChannelByUserId(req *gin.Context) {
 	var reqData *GetSubChannelByUserIdReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
 	}
 	if reqData.Size == 0 {
@@ -49,7 +49,7 @@ func (ctl *Controller) GetSubFeedChannelByUserId(req *gin.Context) {
 
 func (ctl *Controller) GetFeedChannelCatalogListByTag(req *gin.Context) {
 	var reqData *GetChannelCatalogListByTagReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
 	}
 	if reqData.Size == 0 {
@@ -61,7 +61,7 @@ func (ctl *Controller) GetFeedChannelCatalogListByTag(req *gin.Context) {
 
 func (ctl *Controller) GetFeedChannelCatalogListByUserId(req *gin.Context) {
 	var reqData *GetChannelCatalogListByUserIdReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
 	}
 	if reqData.Size == 0 {
@@ -73,7 +73,7 @@ func (ctl *Controller) GetFeedChannelCatalogListByUserId(req *gin.Context) {
 
 func (ctl *Controller) GetFeedChannelInfoByChannelAndUserId(req *gin.Context) {
 	var reqData *GetChannelInfoByChannelUserIdReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
 	}
 
@@ -83,7 +83,7 @@ func (ctl *Controller) GetFeedChannelInfoByChannelAndUserId(req *gin.Context) {
 
 func (ctl *Controller) AddFeedChannelByLink(req *gin.Context) {
 	var reqData *AddFeedChannelByLinkReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
 	}
 

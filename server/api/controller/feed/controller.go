@@ -16,91 +16,91 @@ type RouterInfoData struct {
 }
 
 type TagReqData struct {
-	Start int
-	Size  int
+	Start int `form:"start"`
+	Size  int `form:"size"`
 }
 
 type ChannelReqData struct {
-	Start int
-	Size  int
-	Name  string `binding:"required"`
+	Start int `form:"start"`
+	Size  int `form:"size"`
+	Name  string `form:"name" binding:"required"`
 }
 
 type ItemListByChannelIdReqData struct {
-	Start     int
-	Size      int
+	Start int `form:"start"`
+	Size  int `form:"size"`
 	ChannelId string `binding:"required"`
 	UserId    string
 }
 
 type ItemListByUserIdReqData struct {
-	Start  int
-	Size   int
-	UserId string `binding:"required"`
+	Start int `form:"start"`
+	Size  int `form:"size"`
+	UserId string `form:"userId" binding:"required"`
 }
 
 type SubChannelByUserIdAndChannelIdReqData struct {
-	UserID    string `binding:"required"`
-	ChannelId string `binding:"required"`
+	UserID    string `json:"userId" binding:"required"`
+	ChannelId string `json:"channelId" binding:"required"`
 }
 
 type GetSubChannelByUserIdReqData struct {
 	UserID string `binding:"required"`
-	Start  int
-	Size   int
+	Start int `form:"start"`
+	Size  int `form:"size"`
 }
 
 type GetChannelCatalogListByTagReqData struct {
 	TagName string `binding:"required"`
-	Start   int
-	Size    int
+	Start int `form:"start"`
+	Size  int `form:"size"`
 }
 
 type LatestFeedItemReqData struct {
-	Start int
-	Size  int
+	Start int   `form:"start"`
+	Size  int	`form:"size"`
 }
 
 type MarkFeedItemReqData struct {
-	UserId string `binding:"required"`
-	ItemId string `binding:"required"`
+	UserId string `json:"userId" binding:"required"`
+	ItemId string `json:"itemId" binding:"required"`
 }
 
 type GetMarkFeedItemListReqData struct {
 	UserId string `binding:"required"`
-	Start  int
-	Size   int
+	Start int `form:"start"`
+	Size  int `form:"size"`
 }
 
 type SearchFeedItemReqData struct {
 	Keyword string `binding:"required"`
-	Start   int
-	Size    int
+	Start int `form:"start"`
+	Size  int `form:"size"`
 }
 
 type GetChannelCatalogListByUserIdReqData struct {
 	UserId string `binding:"required"`
-	Start  int
-	Size   int
+	Start int `form:"start"`
+	Size  int `form:"size"`
 }
 
 type GetRandomFeedItemListByUserIdReqData struct {
-	UserId string
-	Start  int
-	Size   int
+	UserId string `form:"userId" binding:"required"`
+	Start int `form:"start"`
+	Size  int `form:"size"`
 }
 
 type GetChannelInfoByChannelUserIdReqData struct {
-	UserID    string
+	UserID    string `form:"userId" binding:"required"`
 	ChannelId string `binding:"required"`
 }
 
 type SubItemByUserIdAndItemIdReqData struct {
-	UserID string
+	UserID string `form:"userId" binding:"required"`
 	ItemId string `binding:"required"`
 }
 
 type AddFeedChannelByLinkReqData struct {
-	UserID string `binding:"required"`
-	Link   string `binding:"required"`
+	UserID string `json:"userId" binding:"required"`
+	Link   string `json:"link" binding:"required"`
 }

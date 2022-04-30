@@ -10,7 +10,7 @@ import (
 
 func (ctl *Controller) GetFeedItemByChannelId(req *gin.Context) {
 	var reqData *ItemListByChannelIdReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
 	}
 	if reqData.Size == 0 {
@@ -23,7 +23,7 @@ func (ctl *Controller) GetFeedItemByChannelId(req *gin.Context) {
 
 func (ctl *Controller) GetFeedItemListByUserId(req *gin.Context) {
 	var reqData *ItemListByUserIdReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
 	}
 	if reqData.Size == 0 {
@@ -40,7 +40,7 @@ func (ctl *Controller) GetFeedItemListByUserId(req *gin.Context) {
 
 func (ctl *Controller) GetLatestFeedItem(req *gin.Context) {
 	var reqData *LatestFeedItemReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
 	}
 	if reqData.Size == 0 {
@@ -52,7 +52,7 @@ func (ctl *Controller) GetLatestFeedItem(req *gin.Context) {
 
 func (ctl *Controller) MarkFeedItemByUserId(req *gin.Context) {
 	var reqData *MarkFeedItemReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateJson(req, &reqData); err != nil {
 		return
 	}
 
@@ -66,7 +66,7 @@ func (ctl *Controller) MarkFeedItemByUserId(req *gin.Context) {
 
 func (ctl *Controller) GetMarkFeedItemListByUserId(req *gin.Context) {
 	var reqData *GetMarkFeedItemListReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
 	}
 
@@ -76,7 +76,7 @@ func (ctl *Controller) GetMarkFeedItemListByUserId(req *gin.Context) {
 
 func (ctl *Controller) SearchFeedItem(req *gin.Context) {
 	var reqData *SearchFeedItemReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
 	}
 
@@ -86,7 +86,7 @@ func (ctl *Controller) SearchFeedItem(req *gin.Context) {
 
 func (ctl *Controller) GetRandomFeedItem(req *gin.Context) {
 	var reqData *GetRandomFeedItemListByUserIdReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
 	}
 
@@ -96,7 +96,7 @@ func (ctl *Controller) GetRandomFeedItem(req *gin.Context) {
 
 func (ctl *Controller) GetFeedItemByItemId(req *gin.Context) {
 	var reqData *SubItemByUserIdAndItemIdReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
 	}
 

@@ -9,7 +9,7 @@ import (
 
 func (ctl *Controller) RegisterUser(req *gin.Context) {
 	var reqData *RegisterReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateJson(req, &reqData); err != nil {
 		return
 	}
 
@@ -24,7 +24,7 @@ func (ctl *Controller) RegisterUser(req *gin.Context) {
 
 func (ctl *Controller) Login(req *gin.Context) {
 	var reqData *LoginReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateJson(req, &reqData); err != nil {
 		return
 	}
 

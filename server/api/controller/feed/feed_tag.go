@@ -10,7 +10,7 @@ import (
 
 func (ctl *Controller) GetFeedTag(req *gin.Context) {
 	var reqData *TagReqData
-	if err := ctl.BaseController.Validate(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
 	}
 	if reqData.Size == 0 {
