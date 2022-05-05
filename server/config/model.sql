@@ -75,3 +75,21 @@ create table if not exists user_sub_channel
 
 create index usc_idx_uid
     on user_sub_channel (user_id);
+
+
+CREATE VIRTUAL TABLE rss_feed_item_fts USING fts5(
+    id UNINDEXED,
+    channel_id UNINDEXED,
+    title UNINDEXED,
+    content UNINDEXED,
+    link UNINDEXED,
+    date UNINDEXED,
+    author UNINDEXED,
+    input_date UNINDEXED,
+    thumbnail UNINDEXED,
+    description,
+    title_sp,
+    content_sp,
+    description_sp,
+    tokenize = unicode61
+);
