@@ -44,7 +44,6 @@ func initV1API(router *gin.Engine) {
 	feedGroup := authorized.Group("/feed")
 	{
 		// feed channel
-		feedGroup.GET("/tag", feed.FeedCtl.GetFeedTag)
 		feedGroup.GET("/channel_by_tag", feed.FeedCtl.GetFeedChannelByTag)
 		feedGroup.GET("/channel_info_by_id", feed.FeedCtl.GetFeedChannelInfoByChannelAndUserId)
 		feedGroup.GET("/channel_catalog_list_by_tag", feed.FeedCtl.GetFeedChannelCatalogListByTag)
