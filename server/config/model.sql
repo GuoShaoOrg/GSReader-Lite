@@ -27,16 +27,16 @@ create table if not exists rss_feed_item
 create index rfi_idx_channel_id
     on rss_feed_item (channel_id);
 
-create table if not exists rss_feed_tag
-(
-    name       varchar(64) not null,
-    channel_id varchar(64) not null,
-    title      mediumtext  null,
-    date       date        null
-);
+-- create table if not exists rss_feed_tag
+-- (
+--     name       varchar(64) not null,
+--     channel_id varchar(64) not null,
+--     title      mediumtext  null,
+--     date       date        null
+-- );
 
-create index rss_feed_tag_idx_name
-    on rss_feed_tag (name);
+-- create index rss_feed_tag_idx_name
+--     on rss_feed_tag (name);
 
 create table if not exists user_info
 (
