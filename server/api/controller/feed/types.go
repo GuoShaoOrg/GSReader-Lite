@@ -104,3 +104,14 @@ type AddFeedChannelByLinkReqData struct {
 	UserID string `json:"userId" binding:"required"`
 	Link   string `json:"link" binding:"required"`
 }
+
+type AddFeedItemReqData struct {
+	Id            string      `json:"id"`
+	ChannelId     string      `json:"channelId"`
+	Title         string      `json:"title"`
+	Description   string      `json:"description"`
+	Link          string      `json:"link"`
+	Author        string      `json:"author"`
+	Thumbnail     string      `json:"thumbnail"`
+	Content       string      `json:"content"`
+}

@@ -1,1 +1,1 @@
-go build -trimpath
+go build -trimpath --tags 'fts5'
