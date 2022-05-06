@@ -80,8 +80,8 @@ func (ctl *Controller) SearchFeedItem(req *gin.Context) {
 		return
 	}
 
-	// resultSet := feed.SearchFeedItem(context.Background(),reqData.Keyword, reqData.Start, reqData.Size)
-	controller.JsonExit(req, 0, "success", "")
+	resultSet := feed.SearchFeedItem(context.Background(),reqData.Keyword, reqData.Start, reqData.Size)
+	controller.JsonExit(req, 0, "success", resultSet)
 }
 
 func (ctl *Controller) GetRandomFeedItem(req *gin.Context) {

@@ -95,7 +95,7 @@ func GetFeedItemByChannelId(ctx context.Context, start, size int, channelId, use
 			Order("rfi.input_date desc").
 			Limit(size).
 			Offset(start).
-			Scan(&itemList); err != nil {
+			Scan(&itemList).Error; err != nil {
 			component.Logger().Error(ctx, err)
 		}
 	} else {
@@ -106,7 +106,7 @@ func GetFeedItemByChannelId(ctx context.Context, start, size int, channelId, use
 			Order("rfi.input_date desc").
 			Limit(size).
 			Offset(start).
-			Find(&itemList); err != nil {
+			Find(&itemList).Error; err != nil {
 			component.Logger().Error(ctx, err)
 		}
 	}
@@ -124,7 +124,7 @@ func GetFeedItemListByUserId(ctx context.Context, userId string, start, size int
 		Order("rfi.input_date desc").
 		Limit(size).
 		Offset(start).
-		Find(&itemList); err != nil {
+		Find(&itemList).Error; err != nil {
 		component.Logger().Error(ctx, err)
 	}
 
@@ -141,7 +141,7 @@ func GetLatestFeedItem(ctx context.Context, userId string, start, size int) (ite
 			Order("rfi.input_date desc").
 			Limit(size).
 			Offset(start).
-			Find(&itemList); err != nil {
+			Find(&itemList).Error; err != nil {
 			component.Logger().Error(ctx, err)
 		}
 	} else {
@@ -152,7 +152,7 @@ func GetLatestFeedItem(ctx context.Context, userId string, start, size int) (ite
 			Order("rfi.input_date desc").
 			Limit(size).
 			Offset(start).
-			Find(&itemList); err != nil {
+			Find(&itemList).Error; err != nil {
 			component.Logger().Error(ctx, err)
 		}
 	}
@@ -172,7 +172,7 @@ func GetRandomFeedItem(ctx context.Context, start, size int, userId string) (ite
 			Where("rfi.input_date>=?", threeDayBefore).
 			Limit(size).
 			Offset(start).
-			Find(&itemList); err != nil {
+			Find(&itemList).Error; err != nil {
 			component.Logger().Error(ctx, err)
 		}
 	} else {
@@ -183,7 +183,7 @@ func GetRandomFeedItem(ctx context.Context, start, size int, userId string) (ite
 			Where("rfi.input_date>=?", threeDayBefore).
 			Limit(size).
 			Offset(start).
-			Find(&itemList); err != nil {
+			Find(&itemList).Error; err != nil {
 			component.Logger().Error(ctx, err)
 		}
 	}
@@ -228,7 +228,7 @@ func GetMarkedFeedItemListByUserId(ctx context.Context, userId string, start, si
 		Where("umfi.status = 1").
 		Limit(size).
 		Offset(start).
-		Find(&itemList); err != nil {
+		Find(&itemList).Error; err != nil {
 		component.Logger().Error(ctx, err)
 	}
 
@@ -244,7 +244,7 @@ func GetFeedItemByItemId(ctx context.Context, itemId, userId string) (item biz.R
 			Joins("left join user_mark_feed_item umfi on umfi.channel_item_id=rfi.id and umfi.user_id="+"'"+userId+"'").
 			Select("rfi.*, rfc.rsshub_link as rsshubLink, rfc.title as channelTitle, rfc.image_url as channelImageUrl, umfi.status as marked, usc.status as sub").
 			Where("rfi.id", itemId).
-			Find(&item); err != nil {
+			Find(&item).Error; err != nil {
 			component.Logger().Error(ctx, err)
 		}
 	} else {
@@ -252,9 +252,25 @@ func GetFeedItemByItemId(ctx context.Context, itemId, userId string) (item biz.R
 			Joins("left join rss_feed_channel rfc on rfi.channel_id=rfc.id").
 			Select("rfi.*, rfc.rsshub_link as rsshubLink, rfc.title as channelTitle, rfc.image_url as channelImageUrl").
 			Where("rfi.id", itemId).
-			Find(&item); err != nil {
+			Find(&item).Error; err != nil {
 			component.Logger().Error(ctx, err)
 		}
+	}
+
+	return
+}
+
+func SearchFeedItem(ctx context.Context, keyword string, start, size int) (item biz.RssFeedItemData) {
+
+	if size == 0 {
+		size = 10
+	}
+
+	keywordArray := lib.GetJieBa().CutForSearch(keyword, true)
+	queryKeyword := strings.Join(keywordArray, " ")
+	queryString := "SELECT " + model.RFFTSIWithoutContentFieldSql + " FROM rss_feed_item_fts WHERE description_sp MATCH ? OR content_sp MATCH ? LIMIT ? OFFSET ?"
+	if err := component.GetDatabase().Raw(queryString, queryKeyword, queryKeyword, size, start).Scan(&item).Error; err != nil {
+		component.Logger().Error(ctx, err)
 	}
 
 	return

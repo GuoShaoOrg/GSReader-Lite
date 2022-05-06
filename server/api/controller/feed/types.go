@@ -73,7 +73,7 @@ type GetMarkFeedItemListReqData struct {
 }
 
 type SearchFeedItemReqData struct {
-	Keyword string `binding:"required"`
+	Keyword string `form:"keyword" binding:"required"`
 	Start int `form:"start"`
 	Size  int `form:"size"`
 }

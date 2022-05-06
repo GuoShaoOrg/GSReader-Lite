@@ -23,5 +23,5 @@ func (RssFeedItemFTS) TableName() string {
 }
 
 var (
-	RFFTSIWithoutContentFieldSql = "rfi.id, rfi.channel_id, rfi.title, rfi.description, rfi.link, rfi.date, rfi.author, rfi.input_date, rfi.thumbnail"
+	RFFTSIWithoutContentFieldSql = "id, channel_id, title, description, link, date, author, input_date, thumbnail"
 )
