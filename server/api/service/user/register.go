@@ -100,6 +100,10 @@ func Login(password, email string, mobile int) (*biz.UserInfo, error) {
 		}
 	}
 
+	if userInfoModel.Uid == "" {
+		return nil, errors.New("账号不存在")
+	}
+
 	bizUseInfo := biz.UserInfo{
 		Uid:        userInfoModel.Uid,
 		Email:      userInfoModel.Email,
