@@ -34,21 +34,25 @@ func AuthToken() gin.HandlerFunc {
 		if len(authorizationArray) < 2 {
 			component.Logger().Info(ctx, "Token or uid is null")
 			controller.JsonExitWithStatus(request, http.StatusUnauthorized, 0, "StatusUnauthorized", nil)
+			request.Abort()
 		}
 		token := authorizationArray[0]
 		uid := authorizationArray[1]
 		if len(token) < 0 || len(uid) < 0 {
 			component.Logger().Info(ctx, "AuthToken or uid is null")
 			controller.JsonExitWithStatus(request, http.StatusUnauthorized, 0, "StatusUnauthorized", nil)
+			request.Abort()
 		}
 
 		if tokenModel, err := ParseToken(token); err != nil {
 			component.Logger().Info(ctx, "AuthToken invalid")
 			controller.JsonExitWithStatus(request, http.StatusUnauthorized, 0, "StatusUnauthorized", nil)
+			request.Abort()
 		} else {
 			if tokenModel.UserId != uid {
 				component.Logger().Info(ctx, "token invalid tokenModel : ", tokenModel, " ,uid : ", uid)
 				controller.JsonExitWithStatus(request, http.StatusUnauthorized, 0, "StatusUnauthorized", nil)
+				request.Abort()
 			}
 		}
 	}
