@@ -83,7 +83,7 @@ func (ctl *Controller) GetFeedChannelInfoByChannelAndUserId(req *gin.Context) {
 
 func (ctl *Controller) AddFeedChannelByLink(req *gin.Context) {
 	var reqData *AddFeedChannelByLinkReqData
-	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
+	if err := ctl.BaseController.ValidateJson(req, &reqData); err != nil {
 		return
 	}
 

@@ -6,9 +6,9 @@ type RssFeedChannel struct {
 	ChannelDesc string `gorm:"column:channel_desc" json:"channelDesc"`
 	ImageUrl    string `gorm:"column:image_url"    json:"imageUrl"`
 	Link        string `gorm:"column:link"         json:"link"`
-	RsshubLink  string `gorm:"column:rsshub_link"  json:"rsshubLink"`
+	RssLink     string `gorm:"column:rss_link"  json:"rssLink"`
 }
 
 func (RssFeedChannel) TableName() string {
-  return "rss_feed_channel"
+	return "rss_feed_channel"
 }

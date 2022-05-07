@@ -6,7 +6,7 @@ type RssFeedChannelData struct {
 	ChannelDesc string
 	ImageUrl    string
 	Link        string
-	RsshubLink  string
+	RssLink     string
 	Count       string
 	Sub         int
 }
@@ -17,7 +17,7 @@ type RssFeedChannelCatalogData struct {
 	ChannelDesc string
 	ImageUrl    string
 	Link        string
-	RsshubLink  string
+	RssLink     string
 	Count       string
 	ItemList    []RssFeedItemData
 	Sub         int

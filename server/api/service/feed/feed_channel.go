@@ -31,6 +31,26 @@ func GetFeedChannelByTag(ctx context.Context, start, size int, name string) (fee
 	return
 }
 
+func GetAllFeedChannelList(ctx context.Context) (feedList []biz.RssFeedChannelData) {
+	feedChannelModel :=make([]model.RssFeedChannel, 0)
+	err := component.GetDatabase().Find(&feedChannelModel).Error
+	if err != nil {
+		component.Logger().Error(ctx, err)
+		return
+	}
+	for _, v := range feedChannelModel {
+		feed := biz.RssFeedChannelData{}
+		feed.Id = v.Id
+		feed.Title = v.Title
+		feed.ChannelDesc = v.ChannelDesc
+		feed.ImageUrl = v.ImageUrl
+		feed.Link = v.Link
+		feed.RssLink = v.RssLink
+		feedList = append(feedList, feed)
+	}
+	return
+}
+
 func SubChannelByUserIdAndChannelId(ctx context.Context, userId, channelId string) error {
 
 	subChannelModel := model.UserSubChannel{}
@@ -115,7 +135,7 @@ func GetFeedChannelCatalogListByTag(ctx context.Context, tagName string, start, 
 		feedCatalog.ImageUrl = rssFeed.ImageUrl
 		feedCatalog.Link = rssFeed.Link
 		feedCatalog.Sub = rssFeed.Sub
-		feedCatalog.RsshubLink = rssFeed.RsshubLink
+		feedCatalog.RssLink = rssFeed.RssLink
 		for _, rssFeedItem := range rssFeedItemList {
 			if rssFeedItem.ChannelId == rssFeed.Id {
 				rssFeedItemData := biz.RssFeedItemData{}
@@ -179,7 +199,7 @@ func GetFeedChannelCatalogListByUserId(ctx context.Context, userId string, start
 		feedCatalog.ImageUrl = rssFeed.ImageUrl
 		feedCatalog.Link = rssFeed.Link
 		feedCatalog.Sub = rssFeed.Sub
-		feedCatalog.RsshubLink = rssFeed.RsshubLink
+		feedCatalog.RssLink = rssFeed.RssLink
 		for _, rssFeedItem := range rssFeedItemList {
 			if rssFeedItem.ChannelId == rssFeed.Id {
 				rssFeedItemData := biz.RssFeedItemData{}
@@ -278,7 +298,7 @@ func AddFeedChannelByLink(ctx context.Context, userID, rssLink string) (err erro
 		}
 		rssFeedChannelMode.ChannelDesc = goFeed.Description
 		rssFeedChannelMode.Link = goFeed.Link
-		rssFeedChannelMode.RsshubLink = rssLink
+		rssFeedChannelMode.RssLink = rssLink
 		feedID = strconv.FormatUint(ghash.RS64([]byte(rssFeedChannelMode.Link+rssFeedChannelMode.Title)), 32)
 		rssFeedChannelMode.Id = feedID
 

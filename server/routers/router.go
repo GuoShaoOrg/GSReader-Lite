@@ -50,6 +50,7 @@ func initV1API(router *gin.Engine) {
 		feedGroup.GET("/channel_by_user_id", feed.FeedCtl.GetSubFeedChannelByUserId)
 		feedGroup.POST("/sub_channel_by_user_id", feed.FeedCtl.SubChannelByUserIdAndChannelId)
 		feedGroup.GET("/channel_catalog_list_by_user_id", feed.FeedCtl.GetFeedChannelCatalogListByUserId)
+		feedGroup.POST("/link/uid", feed.FeedCtl.AddFeedChannelByLink)
 		// feed item
 		feedGroup.GET("/latest", feed.FeedCtl.GetLatestFeedItem)
 		feedGroup.GET("/random", feed.FeedCtl.GetRandomFeedItem)
@@ -59,6 +60,5 @@ func initV1API(router *gin.Engine) {
 		feedGroup.GET("/item_by_item_id", feed.FeedCtl.GetFeedItemByItemId)
 		feedGroup.POST("/mark_feed_item_by_user_id", feed.FeedCtl.MarkFeedItemByUserId)
 		feedGroup.GET("/mark_feed_item_by_user_id", feed.FeedCtl.MarkFeedItemByUserId)
-		feedGroup.GET("/link/uid", feed.FeedCtl.AddFeedChannelByLink)
 	}
 }

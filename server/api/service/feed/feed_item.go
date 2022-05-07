@@ -13,12 +13,23 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gorilla/feeds"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
-func AddFeedItem(ctx context.Context, feedID string, items []feeds.Item) error {
+func AddFeedChannelAndItem(ctx context.Context, feed feeds.Feed) error {
 	feedItemModeList := make([]model.RssFeedItem, 0)
 	feedItemFTSModeList := make([]model.RssFeedItemFTS, 0)
-	for _, item := range items {
+
+	feedID := strconv.FormatUint(ghash.RS64([]byte(feed.Link.Href+feed.Title)), 32)
+	feedChannelModel := model.RssFeedChannel{
+		Id:          feedID,
+		Title:       feed.Title,
+		ChannelDesc: feed.Description,
+		ImageUrl:    feed.Image.Url,
+		Link:        feed.Link.Href,
+	}
+
+	for _, item := range feed.Items {
 		feedItem := model.RssFeedItem{
 			ChannelId:   feedID,
 			Title:       item.Title,
@@ -62,6 +73,10 @@ func AddFeedItem(ctx context.Context, feedID string, items []feeds.Item) error {
 		var (
 			tranErr error
 		)
+
+		_ = tx.Clauses(clause.OnConflict{
+			UpdateAll: true,
+		}).Create(&feedChannelModel).Error
 
 		tranErr = tx.Create(&feedItemModeList).Error
 		if tranErr != nil {
