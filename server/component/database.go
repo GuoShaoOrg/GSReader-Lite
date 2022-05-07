@@ -43,7 +43,7 @@ func createSQLITEIfNotExist(ctx context.Context) {
 		Logger().Error(ctx, err)
 		panic(err)
 	}
-    sql_table := gfile.GetContents("./server/config/model.sql")
+    sql_table := gfile.GetContents("./server/config/schema.sql")
 
     _, err = db.Exec(sql_table)
 		if err != nil {
