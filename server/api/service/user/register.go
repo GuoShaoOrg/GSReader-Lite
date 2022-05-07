@@ -9,25 +9,30 @@ import (
 	"github.com/gogf/gf/v2/crypto/gmd5"
 	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/util/guid"
-	"gorm.io/gorm"
 
 	"gs-reader-lite/server/model"
 	"gs-reader-lite/server/model/biz"
 )
 
 func RegisterUserByPassword(username, password, email, mobile string) (*biz.UserInfo, error) {
-	var exists bool
 	ctx := context.Background()
+	checkUserInfoModel := model.UserInfo{}
 	if email == "" {
-		result := component.GetDatabase().Model(&model.UserInfo{}).Where("mobile", mobile).Find(&exists)
-		if result.Error != nil && errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		result := component.GetDatabase().Model(&model.UserInfo{}).Where("mobile", mobile).Find(&checkUserInfoModel)
+		if result.Error != nil {
+			component.Logger().Error(ctx, result.Error)
+			return nil, errors.New("发生了一些问题")
+		} else if checkUserInfoModel.Uid != "" {
 			return nil, errors.New("该手机号已经注册")
 		} else {
 			component.Logger().Error(ctx, result.Error)
 		}
 	} else if mobile == "" {
-		result := component.GetDatabase().Model(&model.UserInfo{}).Where("email", email).Find(&exists)
-		if result.Error != nil && errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		result := component.GetDatabase().Model(&model.UserInfo{}).Where("email", email).Find(&checkUserInfoModel)
+		if result.Error != nil {
+			component.Logger().Error(ctx, result.Error)
+			return nil, errors.New("发生了一些问题")
+		} else if checkUserInfoModel.Uid != "" {
 			return nil, errors.New("该邮箱已经注册")
 		} else {
 			component.Logger().Error(ctx, result.Error)
