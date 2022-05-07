@@ -120,7 +120,7 @@ func doNonAsyncRefreshFeed() {
 
 			feedInfo.Items = feedItems
 
-			err = feedsvc.AddFeedChannelAndItem(ctx, feedInfo)
+			err = feedsvc.AddFeedChannelAndItem(ctx, feedChannelInfo.RssLink,feedInfo)
 			if err != nil {
 				component.Logger().Error(ctx, "Add feed channel and item error : ", err)
 				continue

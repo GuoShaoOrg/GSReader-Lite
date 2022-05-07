@@ -32,7 +32,7 @@ func GetFeedChannelByTag(ctx context.Context, start, size int, name string) (fee
 }
 
 func GetAllFeedChannelList(ctx context.Context) (feedList []biz.RssFeedChannelData) {
-	feedChannelModel :=make([]model.RssFeedChannel, 0)
+	feedChannelModel := make([]model.RssFeedChannel, 0)
 	err := component.GetDatabase().Find(&feedChannelModel).Error
 	if err != nil {
 		component.Logger().Error(ctx, err)
@@ -259,11 +259,19 @@ func AddFeedChannelByLink(ctx context.Context, userID, rssLink string) (err erro
 		return err
 	}
 
-	if result := component.GetDatabase().Table("rss_feed_channel rfc").Where("rfc.link", rssLink).Find(&rssFeedChannelMode); result.Error != nil {
+	if result := component.GetDatabase().Table("rss_feed_channel rfc").Where("rfc.rss_link", rssLink).Find(&rssFeedChannelMode); result.Error != nil {
 		component.Logger().Error(ctx, result.Error)
 		err = errors.New("获取RSS链接失败")
 		return err
 	} else if rssFeedChannelMode.Id != "" {
+		if result := component.GetDatabase().Table("user_sub_channel usc").Where("usc.channel_id", rssFeedChannelMode.Id).Find(&userSubChannel); result.Error != nil {
+			component.Logger().Error(ctx, result.Error)
+			err = errors.New("发生了一些问题")
+			return err
+		} else if userSubChannel.Status == 1 {
+			err = errors.New("已经订阅过了")
+			return err
+		}
 		userSubChannel.ChannelId = rssFeedChannelMode.Id
 		userSubChannel.UserId = userID
 		userSubChannel.Status = 1

@@ -16,7 +16,7 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-func AddFeedChannelAndItem(ctx context.Context, feed feeds.Feed) error {
+func AddFeedChannelAndItem(ctx context.Context, rssLink string,feed feeds.Feed) error {
 	feedItemModeList := make([]model.RssFeedItem, 0)
 	feedItemFTSModeList := make([]model.RssFeedItemFTS, 0)
 
@@ -27,6 +27,7 @@ func AddFeedChannelAndItem(ctx context.Context, feed feeds.Feed) error {
 		ChannelDesc: feed.Description,
 		ImageUrl:    feed.Image.Url,
 		Link:        feed.Link.Href,
+		RssLink:     rssLink,
 	}
 
 	for _, item := range feed.Items {
