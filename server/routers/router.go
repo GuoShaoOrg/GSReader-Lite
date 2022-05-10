@@ -2,18 +2,22 @@ package routers
 
 import (
 	"context"
+	"gs-reader-lite/public"
 	"gs-reader-lite/server/api/controller/feed"
 	"gs-reader-lite/server/api/controller/pages"
 	"gs-reader-lite/server/api/controller/user"
 	"gs-reader-lite/server/component"
 	"gs-reader-lite/server/middlewear"
+	"gs-reader-lite/templates"
+	"html/template"
+	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
 
 func InitRouter() {
 	router := gin.Default()
-	initStaticRoute(router)
 	initPages(router)
 	initV1API(router)
 	err := router.Run(":8083")
@@ -58,12 +62,18 @@ func initV1API(router *gin.Engine) {
 	}
 }
 
-func initStaticRoute(router *gin.Engine) {
-	router.Static("/public", "./public")
-}
-
 func initPages(router *gin.Engine) {
-	router.LoadHTMLGlob("templates/*")
+	if os.Getenv("env") == "dev" {
+		router.LoadHTMLGlob("templates/*")
+		router.Static("/public", "./public")
+	} else {
+		tmplFS := templates.Templates
+		templ := template.Must(template.New("").ParseFS(tmplFS, "*.html"))
+		router.SetHTMLTemplate(templ)
+		publicFS := public.Public
+		router.StaticFS("/public", http.FS(publicFS))
+	}
+
 	router.Use(middlewear.StaticRedirect())
 	pagesGroup := router.Group("/view")
 	{
