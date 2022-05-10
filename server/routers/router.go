@@ -3,30 +3,25 @@ package routers
 import (
 	"context"
 	"gs-reader-lite/server/api/controller/feed"
+	"gs-reader-lite/server/api/controller/pages"
 	"gs-reader-lite/server/api/controller/user"
 	"gs-reader-lite/server/component"
 	"gs-reader-lite/server/middlewear"
-	"gs-reader-lite/web/static"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func InitRouter() {
 	router := gin.Default()
-	router.Use(middlewear.StaticRedirect())
-	initStaticWebRes(router)
+	initStaticRoute(router)
+	initPages(router)
 	initV1API(router)
-	err := router.Run(":8080")
+	err := router.Run(":8083")
 	if err != nil {
 		ctx := context.Background()
 		component.Logger().Error(ctx, err.Error())
 		panic(err)
 	}
-}
-
-func initStaticWebRes(router *gin.Engine) {
-	router.StaticFS("/view", http.FS(static.Static))
 }
 
 func initV1API(router *gin.Engine) {
@@ -60,5 +55,19 @@ func initV1API(router *gin.Engine) {
 		feedGroup.GET("/item_by_item_id", feed.FeedCtl.GetFeedItemByItemId)
 		feedGroup.POST("/mark_feed_item_by_user_id", feed.FeedCtl.MarkFeedItemByUserId)
 		feedGroup.GET("/mark_feed_item_by_user_id", feed.FeedCtl.MarkFeedItemByUserId)
+	}
+}
+
+func initStaticRoute(router *gin.Engine) {
+	router.Static("/public", "./public")
+}
+
+func initPages(router *gin.Engine) {
+	router.LoadHTMLGlob("templates/*")
+	router.Use(middlewear.StaticRedirect())
+	pagesGroup := router.Group("/view")
+	{
+		pageCtl := pages.PagesCtl
+		pagesGroup.GET("/", pageCtl.Home)
 	}
 }
