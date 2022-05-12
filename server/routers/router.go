@@ -79,6 +79,6 @@ func initPages(router *gin.Engine) {
 	{
 		pageCtl := pages.PagesCtl
 		pagesGroup.GET("/", pageCtl.Home)
-		pagesGroup.GET("/home/container", pageCtl.HomeContainerTmpl)
+		pagesGroup.GET("/home/container/list", pageCtl.HomeContainerListTmpl)
 	}
 }

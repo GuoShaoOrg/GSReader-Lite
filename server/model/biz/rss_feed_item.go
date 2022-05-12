@@ -13,9 +13,9 @@ type RssFeedItemData struct {
 	Date            *gtime.Time
 	Author          string
 	InputDate       *gtime.Time
-	RsshubLink      string
-	ChannelImageUrl string
-	ChannelTitle    string
+	RssLink         string `gorm:"column:rssLink"`
+	ChannelImageUrl string `gorm:"column:channelImageUrl"`
+	ChannelTitle    string `gorm:"column:channelTitle"`
 	Marked          int
 	Sub             int
 }

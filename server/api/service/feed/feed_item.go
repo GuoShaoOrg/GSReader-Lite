@@ -16,7 +16,7 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-func AddFeedChannelAndItem(ctx context.Context, rssLink string,feed feeds.Feed) error {
+func AddFeedChannelAndItem(ctx context.Context, rssLink string, feed feeds.Feed) error {
 	feedItemModeList := make([]model.RssFeedItem, 0)
 	feedItemFTSModeList := make([]model.RssFeedItemFTS, 0)
 
@@ -132,7 +132,7 @@ func GetFeedItemByChannelId(ctx context.Context, start, size int, channelId, use
 
 func GetFeedItemListByUserId(ctx context.Context, userId string, start, size int) (itemList []biz.RssFeedItemData) {
 	if err := component.GetDatabase().Table("rss_feed_item rfi").
-		Select(model.RFIWithoutContentFieldSql+", rfc.rsshub_link as rsshubLink, rfc.title as channelTitle, rfc.image_url as channelImageUrl, umfi.status as marked, usc.status as sub").
+		Select(model.RFIWithoutContentFieldSql+", rfc.rss_link as rssLink, rfc.title as channelTitle, rfc.image_url as channelImageUrl, umfi.status as marked, usc.status as sub").
 		Joins("inner join user_sub_channel usc on usc.channel_id=rfi.channel_id").
 		Joins("left join user_mark_feed_item umfi on umfi.channel_item_id=rfi.id").
 		Joins("inner join rss_feed_channel rfc on usc.channel_id=rfc.id").

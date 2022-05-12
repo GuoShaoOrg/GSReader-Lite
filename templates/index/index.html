@@ -55,7 +55,9 @@
 	</div>
 
 	<div class="mdui-container" id="home-container">
+		<ul class="mdui-list" id="home-container-list">
 
+		</ul>
 	</div>
 	<div class="mdui-container" id="sub-container">
 		sub
@@ -70,7 +72,7 @@
 	<!-- MDUI JavaScript -->
 	<script src="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
 	<script>
-		var $ = mdui.$;
+		const $ = mdui.$;
 		let containerInitStatus = {
 			"home": 0,
 			"sub": 0,
@@ -135,13 +137,29 @@
 		}
 
 		function getContainerHtml(name) {
-			$.ajax({
-				method: 'GET',
-				url: '/view/' + name + '/container',
-				success: function (data) {
-					$('#' + name + '-container').append(data)
-				}
-			});
+			switch (name) {
+				case 'home':
+					$.ajax({
+						method: 'GET',
+						url: '/view/' + name + '/container/list',
+						data: {
+							userId: '',
+							start: 0,
+							size: 10
+						},
+						success: function (data) {
+							$('#' + name + '-container-list').append(data)
+						}
+					});
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		function toItemSourcePage(link) {
+			window.open(link, '_blank')
 		}
 	</script>
 </body>

@@ -1,0 +1,30 @@
+{{ range .items}}
+    <div class="mdui-card">
+
+        <div class="mdui-card-header">
+            <img class="mdui-card-header-avatar" src="{{if .ChannelImageUrl}}{{.ChannelImageUrl}} {{else}}/public/favicon.ico{{end}}"/>
+            <div class="mdui-card-header-title">{{.Title}}</div>
+            <div class="mdui-card-header-subtitle">{{.ChannelTitle}}</div>
+        </div>
+
+        <div class="mdui-card-media">
+            <img src="{{.Thumbnail}}"  alt=""/>
+
+            <div class="mdui-card-menu">
+                <button class="mdui-btn mdui-btn-icon mdui-text-color-white">
+                    <i class="mdui-icon material-icons">share</i>
+                </button>
+            </div>
+        </div>
+
+        <div class="mdui-card-content" onclick="toItemSourcePage('{{ .Link }}')">{{.Description}}</div>
+
+        <div class="mdui-card-actions">
+            <button class="mdui-btn mdui-ripple">
+                <i class="mdui-icon material-icons {{if .Marked}}mdui-text-color-theme{{end}}">favorite_border</i>
+            </button>
+            <button class="mdui-btn mdui-ripple"><i class="mdui-icon material-icons">share</i></button>
+        </div>
+
+    </div>
+{{ end }}
