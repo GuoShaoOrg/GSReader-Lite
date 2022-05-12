@@ -3,21 +3,15 @@
 
         <div class="mdui-card-header">
             <img class="mdui-card-header-avatar" src="{{if .ChannelImageUrl}}{{.ChannelImageUrl}} {{else}}/public/favicon.ico{{end}}"/>
-            <div class="mdui-card-header-title">{{.Title}}</div>
+            <a class="mdui-card-header-title" href="{{ .Link }}" target="_blank">{{.Title}}</a>
             <div class="mdui-card-header-subtitle">{{.ChannelTitle}}</div>
         </div>
 
         <div class="mdui-card-media">
             <img src="{{.Thumbnail}}"  alt=""/>
-
-            <div class="mdui-card-menu">
-                <button class="mdui-btn mdui-btn-icon mdui-text-color-white">
-                    <i class="mdui-icon material-icons">share</i>
-                </button>
-            </div>
         </div>
 
-        <div class="mdui-card-content" onclick="toItemSourcePage('{{ .Link }}')">{{.Description}}</div>
+        <div class="mdui-card-content mdui-ripple" onclick="toItemSourcePage('{{ .Link }}')">{{.Description}}</div>
 
         <div class="mdui-card-actions">
             <button class="mdui-btn mdui-ripple">
