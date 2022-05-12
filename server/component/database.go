@@ -3,10 +3,12 @@ package component
 import (
 	"context"
 	"database/sql"
+	"os"
 
 	"github.com/gogf/gf/v2/os/gfile"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	gormLogger "gorm.io/gorm/logger"
 )
 
 var (
@@ -25,9 +27,20 @@ func InitDatabase() {
 }
 
 func setDatabaseConfig(ctx context.Context) {
-	var err error
+	var (
+		err      error
+		dbConfig gorm.Config
+	)
+	if os.Getenv("env") == "dev" {
+		dbConfig = gorm.Config{
+			Logger: gormLogger.Default.LogMode(gormLogger.Info),
+		}
+	} else {
+		dbConfig = gorm.Config{
+			Logger: gormLogger.Default.LogMode(gormLogger.Error),
+		}
+	}
 
-	dbConfig := gorm.Config{}
 	databaseInstance, err = gorm.Open(sqlite.Open("./db.sqlite3"), &dbConfig)
 	if err != nil {
 		Logger().Error(ctx, err)
@@ -43,10 +56,10 @@ func createSQLITEIfNotExist(ctx context.Context) {
 		Logger().Error(ctx, err)
 		panic(err)
 	}
-    sql_table := gfile.GetContents("./server/config/schema.sql")
+	sql_table := gfile.GetContents("./server/config/schema.sql")
 
-    _, err = db.Exec(sql_table)
-		if err != nil {
+	_, err = db.Exec(sql_table)
+	if err != nil {
 		Logger().Error(ctx, err)
 		panic(err)
 	}
