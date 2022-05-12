@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+	<meta name="renderer" content="webkit" />
+	<meta name="force-rendering" content="webkit" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<link rel="icon" type="image/x-icon" href="/public/favicon.ico">
+	<!-- MDUI CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/css/mdui.min.css" />
+	<title>锅烧阅读</title>
+</head>
+
+<body class="mdui-drawer-body-right mdui-theme-primary-deep-orange">
+	<div class="mdui-drawer" id="left-drawer">
+		<ul class="mdui-list" id="drawer-list">
+			<li class="mdui-subheader">用户</li>
+			<li class="mdui-list-item mdui-ripple" mdui-drawer-close>
+				<i class="mdui-list-item-icon mdui-icon material-icons">account_circle</i>
+				<div class="mdui-list-item-content">{{ .username }}</div>
+			</li>
+			<li class="mdui-subheader">Feed</li>
+			<li class="mdui-list-item mdui-ripple" mdui-drawer-close id="drawer-home-item"
+				onclick="onDrawerMenuItemClick('home')">
+				<i class="mdui-list-item-icon mdui-icon material-icons" id="drawer-home-item-icon">rss_feed</i>
+				<div class="mdui-list-item-content">全部文章</div>
+			</li>
+			<li class="mdui-list-item mdui-ripple " mdui-drawer-close id="drawer-sub-item"
+				onclick="onDrawerMenuItemClick('sub')">
+				<i class="mdui-list-item-icon mdui-icon material-icons "
+					id="drawer-sub-item-icon">format_list_bulleted</i>
+				<div class="mdui-list-item-content">已订阅源</div>
+			</li>
+			<li class="mdui-list-item mdui-ripple " mdui-drawer-close id="drawer-search-item"
+				onclick="onDrawerMenuItemClick('search')">
+				<i class="mdui-list-item-icon mdui-icon material-icons " id="drawer-search-item-icon">search</i>
+				<div class="mdui-list-item-content">搜索文章</div>
+			</li>
+			<li class="mdui-list-item mdui-ripple " mdui-drawer-close id="drawer-fav-item"
+				onclick="onDrawerMenuItemClick('fav')">
+				<i class="mdui-list-item-icon mdui-icon material-icons " id="drawer-fav-item-icon">favorite_border</i>
+				<div class="mdui-list-item-content">收藏文章</div>
+			</li>
+		</ul>
+	</div>
+	<div class="mdui-toolbar mdui-color-theme">
+		<button class="mdui-btn" id="menu-btn" mdui-drawer="{target: '#left-drawer'}">
+			<i class="mdui-icon material-icons  mdui-text-color-white">menu</i>
+		</button>
+		<span class="mdui-typo-title mdui-text-color-white" id="toolbar-title"></span>
+		<div class="mdui-toolbar-spacer"></div>
+	</div>
+
+	<div class="mdui-container" id="home-container">
+
+	</div>
+	<div class="mdui-container" id="sub-container">
+		sub
+	</div>
+	<div class="mdui-container" id="search-container">
+		search
+	</div>
+	<div class="mdui-container" id="fav-container">
+		fav
+	</div>
+
+	<!-- MDUI JavaScript -->
+	<script src="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
+	<script>
+		var $ = mdui.$;
+		let containerInitStatus = {
+			"home": 0,
+			"sub": 0,
+			"search": 0,
+			"fav": 0,
+		}
+		onDrawerMenuItemClick('home');
+		function onDrawerMenuItemClick(name) {
+			setDrawerMenuStyle(name)
+			setToobarTitle(name)
+			showOrHideContainer(name)
+		}
+
+		function setDrawerMenuStyle(name) {
+			// remove all items selected status
+			$('#drawer-home-item').removeClass('mdui-list-item-active')
+			$('#drawer-home-item-icon').removeClass('mdui-text-color-theme')
+			$('#drawer-sub-item').removeClass('mdui-list-item-active')
+			$('#drawer-sub-item-icon').removeClass('mdui-text-color-theme')
+			$('#drawer-search-item').removeClass('mdui-list-item-active')
+			$('#drawer-search-item-icon').removeClass('mdui-text-color-theme')
+			$('#drawer-fav-item').removeClass('mdui-list-item-active')
+			$('#drawer-fav-item-icon').removeClass('mdui-text-color-theme')
+			// set clicked item as selected
+			$("#drawer-" + name + "-item").addClass('mdui-list-item-active')
+			$("#drawer-" + name + "-item-icon").addClass('mdui-text-color-theme')
+		}
+
+		function setToobarTitle(title) {
+			let titleVal = ''
+			switch (title) {
+				case 'home':
+					titleVal = '全部文章'
+					break;
+				case 'sub':
+					titleVal = '已订阅源'
+					break;
+				case 'search':
+					titleVal = '搜索文章'
+					break;
+				case 'fav':
+					titleVal = '收藏文章'
+					break;
+
+				default:
+					break;
+			}
+			$('#toolbar-title').text(titleVal)
+		}
+		function showOrHideContainer(name) {
+			$('#home-container').hide()
+			$('#sub-container').hide()
+			$('#search-container').hide()
+			$('#fav-container').hide()
+			$("#" + name + "-container").show()
+
+			if (containerInitStatus[name] === 1) {
+				return
+			}
+			getContainerHtml(name)
+			containerInitStatus[name] = 1
+		}
+
+		function getContainerHtml(name) {
+			$.ajax({
+				method: 'GET',
+				url: '/view/' + name + '/container',
+				success: function (data) {
+					$('#' + name + '-container').append(data)
+				}
+			});
+		}
+	</script>
+</body>
+
+</html>

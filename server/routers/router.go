@@ -64,11 +64,11 @@ func initV1API(router *gin.Engine) {
 
 func initPages(router *gin.Engine) {
 	if os.Getenv("env") == "dev" {
-		router.LoadHTMLGlob("templates/*")
+		router.LoadHTMLGlob("templates/**/*")
 		router.Static("/public", "./public")
 	} else {
 		tmplFS := templates.Templates
-		templ := template.Must(template.New("").ParseFS(tmplFS, "*.html"))
+		templ := template.Must(template.New("").ParseFS(tmplFS, "*/*.html"))
 		router.SetHTMLTemplate(templ)
 		publicFS := public.Public
 		router.StaticFS("/public", http.FS(publicFS))
@@ -79,5 +79,6 @@ func initPages(router *gin.Engine) {
 	{
 		pageCtl := pages.PagesCtl
 		pagesGroup.GET("/", pageCtl.Home)
+		pagesGroup.GET("/home/container", pageCtl.HomeContainerTmpl)
 	}
 }
