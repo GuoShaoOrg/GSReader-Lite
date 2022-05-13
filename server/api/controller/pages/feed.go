@@ -13,7 +13,7 @@ func (ctl *Controller) Home(req *gin.Context) {
 	req.HTML(http.StatusOK, "index.html", gin.H{})
 }
 
-func (ctl *Controller) HomeContainerListTmpl(req *gin.Context) {
+func (ctl *Controller) FeedItemListTmpl(req *gin.Context) {
 	var reqData *ctlFeed.ItemListByUserIdReqData
 	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
@@ -24,8 +24,12 @@ func (ctl *Controller) HomeContainerListTmpl(req *gin.Context) {
 	if len(itemList) == 0 {
 		message = "您还没有订阅任何文章"
 	}
-	req.HTML(http.StatusOK, "home-container-list.html", gin.H{
+	req.HTML(http.StatusOK, "feed-item-list.html", gin.H{
 		"items":   itemList,
 		"message": message,
 	})
+}
+
+func (ctl *Controller) AddFeedChannelTmpl(req *gin.Context) {
+	req.HTML(http.StatusOK, "add-feed.html", gin.H{})
 }

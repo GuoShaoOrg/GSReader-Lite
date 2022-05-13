@@ -61,7 +61,7 @@
 		</div>
 		<div class="mdui-center" style="padding-top: 56px;max-width: 800px">
 			<div class="mdui-container" id="home-container">
-				<ul class="mdui-list" id="home-container-list">
+				<ul class="mdui-list" id="feed-item-list">
 
 				</ul>
 			</div>
@@ -75,7 +75,7 @@
 				fav
 			</div>
 			<div class="mdui-container" id="add-container">
-				add
+				
 			</div>
 		</div>
 	</div>
@@ -171,18 +171,26 @@
 				case 'home':
 					$.ajax({
 						method: 'GET',
-						url: '/view/' + name + '/container/list',
+						url: '/view/feed/item/list',
 						data: {
 							userId: userInfo.uid,
 							start: 0,
 							size: 10
 						},
 						success: function (data) {
-							$('#' + name + '-container-list').append(data)
+							$('#feed-item-list').append(data)
 						}
 					});
 					break;
-
+				case 'add':
+					$.ajax({
+						method: 'GET',
+						url: '/view/feed/add',
+						success: function (data) {
+							$('#add-container').append(data)
+						}
+					});
+					break;
 				default:
 					break;
 			}
