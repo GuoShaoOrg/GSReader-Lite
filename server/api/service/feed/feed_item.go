@@ -25,9 +25,15 @@ func AddFeedChannelAndItem(ctx context.Context, rssLink string, feed feeds.Feed)
 		Id:          feedID,
 		Title:       feed.Title,
 		ChannelDesc: feed.Description,
-		ImageUrl:    feed.Image.Url,
-		Link:        feed.Link.Href,
 		RssLink:     rssLink,
+	}
+
+	if feed.Image != nil {
+		feedChannelModel.ImageUrl = feed.Image.Url
+	}
+
+	if feed.Link != nil {
+		feedChannelModel.Link = feed.Link.Href
 	}
 
 	for _, item := range feed.Items {
@@ -36,10 +42,14 @@ func AddFeedChannelAndItem(ctx context.Context, rssLink string, feed feeds.Feed)
 			Title:       item.Title,
 			Description: item.Description,
 			Content:     item.Content,
-			Link:        item.Link.Href,
 			Date:        gtime.New(item.Created.String()),
-			Author:      item.Author.Name,
 			InputDate:   gtime.Now(),
+		}
+		if item.Link != nil {
+			feedItem.Link = item.Link.Href
+		}
+		if item.Author != nil {
+			feedItem.Author = item.Author.Name
 		}
 		uniString := feedItem.Link + feedItem.Title
 		feedItemID := strconv.FormatUint(ghash.RS64([]byte(uniString)), 32)
@@ -51,10 +61,14 @@ func AddFeedChannelAndItem(ctx context.Context, rssLink string, feed feeds.Feed)
 			Title:       item.Title,
 			Description: item.Description,
 			Content:     item.Content,
-			Link:        item.Link.Href,
 			Date:        feedItem.InputDate,
-			Author:      item.Author.Name,
 			InputDate:   feedItem.InputDate,
+		}
+		if item.Link != nil {
+			feedItemFTS.Link = item.Link.Href
+		}
+		if item.Author != nil {
+			feedItemFTS.Author = item.Author.Name
 		}
 		feedItemFTS.Id = feedItemID
 		jieba := lib.GetJieBa()
