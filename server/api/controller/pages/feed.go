@@ -31,5 +31,8 @@ func (ctl *Controller) UserAllFeedItemListTmpl(req *gin.Context) {
 }
 
 func (ctl *Controller) AddFeedChannelTmpl(req *gin.Context) {
-	req.HTML(http.StatusOK, "add-feed.html", gin.H{})
+	req.HTML(http.StatusOK, "add-feed.html", gin.H{
+		"RSSLink": "RSS链接",
+		"AddBtnText": "添加订阅",
+	})
 }

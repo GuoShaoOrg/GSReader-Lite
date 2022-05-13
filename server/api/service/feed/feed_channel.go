@@ -264,7 +264,7 @@ func AddFeedChannelByLink(ctx context.Context, userID, rssLink string) (err erro
 		err = errors.New("获取RSS链接失败")
 		return err
 	} else if rssFeedChannelMode.Id != "" {
-		if result := component.GetDatabase().Table("user_sub_channel usc").Where("usc.channel_id", rssFeedChannelMode.Id).Find(&userSubChannel); result.Error != nil {
+		if result := component.GetDatabase().Table("user_sub_channel usc").Where("usc.channel_id=? and usc.user_id=?", rssFeedChannelMode.Id, userID).Find(&userSubChannel); result.Error != nil {
 			component.Logger().Error(ctx, result.Error)
 			err = errors.New("发生了一些问题")
 			return err

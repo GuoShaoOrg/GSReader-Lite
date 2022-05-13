@@ -90,7 +90,7 @@ func (ctl *Controller) AddFeedChannelByLink(req *gin.Context) {
 	var err error
 	err = feed.AddFeedChannelByLink(context.Background(), reqData.UserID, reqData.Link)
 	if err == nil {
-		controller.JsonExit(req, 0, "success", nil)
+		controller.JsonExit(req, 0, "订阅成功", "")
 	} else {
 		controller.JsonExit(req, 1, err.Error())
 	}

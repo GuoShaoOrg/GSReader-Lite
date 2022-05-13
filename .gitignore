@@ -4,3 +4,4 @@ go.sum
 db.sqlite3
 log
 *.session.sql
+__debug_bin
