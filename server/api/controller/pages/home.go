@@ -10,9 +10,7 @@ import (
 )
 
 func (ctl *Controller) Home(req *gin.Context) {
-	req.HTML(http.StatusOK, "index.html", gin.H{
-		"username": "管理员",
-	})
+	req.HTML(http.StatusOK, "index.html", gin.H{})
 }
 
 func (ctl *Controller) HomeContainerListTmpl(req *gin.Context) {

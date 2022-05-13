@@ -20,7 +20,7 @@
 			<li class="mdui-subheader">用户</li>
 			<li class="mdui-list-item mdui-ripple" mdui-drawer-close>
 				<i class="mdui-list-item-icon mdui-icon material-icons">account_circle</i>
-				<div class="mdui-list-item-content">{{ .username }}</div>
+				<div class="mdui-list-item-content" id="drawer-username"></div>
 			</li>
 			<li class="mdui-subheader">Feed</li>
 			<li class="mdui-list-item mdui-ripple" mdui-drawer-close id="drawer-home-item"
@@ -83,6 +83,18 @@
 			"search": 0,
 			"fav": 0,
 		}
+
+		let userInfo = getUserInfo();
+		if (userInfo !== null && userInfo !== undefined) {
+			if (userInfo.username !== '') {
+				$('#drawer-username').text(userInfo.username);
+			} else if (userInfo.mobile !== '') {
+				$('#drawer-username').text(userInfo.mobile);
+			} else if (condition.email !== '') {
+				$('#drawer-username').text(userInfo.email);
+			}
+		}
+
 		onDrawerMenuItemClick('home');
 		function onDrawerMenuItemClick(name) {
 			setDrawerMenuStyle(name)
