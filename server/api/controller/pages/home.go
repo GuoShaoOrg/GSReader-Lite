@@ -20,7 +20,12 @@ func (ctl *Controller) HomeContainerListTmpl(req *gin.Context) {
 	}
 	ctx := context.Background()
 	itemList := feed.GetFeedItemListByUserId(ctx, reqData.UserId, reqData.Start, reqData.Size)
+	var message string
+	if len(itemList) == 0 {
+		message = "您还没有订阅任何文章"
+	}
 	req.HTML(http.StatusOK, "home-container-list.html", gin.H{
-		"items": itemList,
+		"items":   itemList,
+		"message": message,
 	})
 }
