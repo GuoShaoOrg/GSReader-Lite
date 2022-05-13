@@ -44,33 +44,41 @@
 				<i class="mdui-list-item-icon mdui-icon material-icons " id="drawer-fav-item-icon">favorite_border</i>
 				<div class="mdui-list-item-content">收藏文章</div>
 			</li>
+			<li class="mdui-list-item mdui-ripple " mdui-drawer-close id="drawer-add-item"
+				onclick="onDrawerMenuItemClick('add')">
+				<i class="mdui-list-item-icon mdui-icon material-icons" id="drawer-add-item-icon">add_circle_outline</i>
+				<div class="mdui-list-item-content">添加订阅</div>
+			</li>
 		</ul>
 	</div>
-    <div class="mdui-container-fluid">
-        <div class="mdui-toolbar mdui-color-theme" style="position: fixed; top: 0;z-index: 1001">
-            <button class="mdui-btn" id="menu-btn" mdui-drawer="{target: '#left-drawer'}">
-                <i class="mdui-icon material-icons  mdui-text-color-white">menu</i>
-            </button>
-            <span class="mdui-typo-title mdui-text-color-white" id="toolbar-title"></span>
-            <div class="mdui-toolbar-spacer"></div>
-        </div>
-        <div class="mdui-center" style="margin-top: 56px;max-width: 800px">
-            <div class="mdui-container" id="home-container">
-                <ul class="mdui-list" id="home-container-list">
+	<div class="mdui-container-fluid" style="padding-left: 0px;padding-right: 0px;">
+		<div class="mdui-toolbar mdui-color-theme" style="position: fixed; top: 0;z-index: 1001">
+			<button class="mdui-btn" id="menu-btn" mdui-drawer="{target: '#left-drawer'}">
+				<i class="mdui-icon material-icons  mdui-text-color-white">menu</i>
+			</button>
+			<span class="mdui-typo-title mdui-text-color-white" id="toolbar-title"></span>
+			<div class="mdui-toolbar-spacer"></div>
+		</div>
+		<div class="mdui-center" style="padding-top: 56px;max-width: 800px">
+			<div class="mdui-container" id="home-container">
+				<ul class="mdui-list" id="home-container-list">
 
-                </ul>
-            </div>
-            <div class="mdui-container" id="sub-container">
-                sub
-            </div>
-            <div class="mdui-container" id="search-container">
-                search
-            </div>
-            <div class="mdui-container" id="fav-container">
-                fav
-            </div>
-        </div>
-    </div>
+				</ul>
+			</div>
+			<div class="mdui-container" id="sub-container">
+				sub
+			</div>
+			<div class="mdui-container" id="search-container">
+				search
+			</div>
+			<div class="mdui-container" id="fav-container">
+				fav
+			</div>
+			<div class="mdui-container" id="add-container">
+				add
+			</div>
+		</div>
+	</div>
 
 	<!-- MDUI JavaScript -->
 	<script src="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
@@ -112,6 +120,8 @@
 			$('#drawer-search-item-icon').removeClass('mdui-text-color-theme')
 			$('#drawer-fav-item').removeClass('mdui-list-item-active')
 			$('#drawer-fav-item-icon').removeClass('mdui-text-color-theme')
+			$('#drawer-add-item').removeClass('mdui-list-item-active')
+			$('#drawer-add-item-icon').removeClass('mdui-text-color-theme')
 			// set clicked item as selected
 			$("#drawer-" + name + "-item").addClass('mdui-list-item-active')
 			$("#drawer-" + name + "-item-icon").addClass('mdui-text-color-theme')
@@ -132,6 +142,9 @@
 				case 'fav':
 					titleVal = '收藏文章'
 					break;
+				case 'add':
+					titleVal = '添加订阅'
+					break;
 
 				default:
 					break;
@@ -143,6 +156,7 @@
 			$('#sub-container').hide()
 			$('#search-container').hide()
 			$('#fav-container').hide()
+			$('#add-container').hide()
 			$("#" + name + "-container").show()
 
 			if (containerInitStatus[name] === 1) {
