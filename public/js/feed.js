@@ -1,7 +1,6 @@
 function AddFeedChannelByUserID() {
     let rssLink = $('#rss-link').val()
     let userInfo = getUserInfo()
-    console.log(userInfo)
     let userId = ""
     let token = ""
     if (userInfo !== null) {
