@@ -50,7 +50,7 @@ function login(account, password) {
                     position: 'top',
                 })
                 setUserInfo(jsonData.data[0])
-                // window.location.href = '/'
+                window.location.href = '/'
             }
         },
         error: function (data) {
