@@ -6,9 +6,10 @@ function setUserInfo(userInfo) {
 
 function getUserInfo() {
     let userInfo = JSON.parse(localStorage.getItem("userInfo"))
+    if (userInfo === undefined || userInfo === null) {
+        return null
+    }
     let uid = userInfo['uid']
-    console.log(uid)
-    console.log(userInfo)
     if (uid !== null && uid !== undefined && uid !== '') {
         return userInfo
     }
@@ -37,7 +38,6 @@ function login(account, password) {
         url: '/v1/api/user/login',
         data: JSON.stringify(postData),
         success: function (data) {
-            console.log(data)
             let jsonData = JSON.parse(data)
             if (jsonData.error !== 0) {
                 mdui.snackbar({
@@ -50,11 +50,54 @@ function login(account, password) {
                     position: 'top',
                 })
                 setUserInfo(jsonData.data[0])
-                window.location.href = '/'
+                // window.location.href = '/'
             }
         },
         error: function (data) {
 
+        }
+    })
+}
+
+function register(account, password, vPassword) {
+    let email = ""
+    let mobile = 0
+    if (isEmail(account)) {
+        email = account
+    } else if (isMobile(account)) {
+        mobile = account
+    }
+    let postData = {
+        password: password,
+        passwordVerify: vPassword,
+        email: email,
+        mobile: parseInt(mobile),
+    }
+    $.ajax({
+        method: 'POST',
+        url: '/v1/api/user/register',
+        data: JSON.stringify(postData),
+        success: function (data) {
+            let jsonData = JSON.parse(data)
+            if (jsonData.error !== 0) {
+                mdui.snackbar({
+                    message: jsonData.msg,
+                    position: 'top',
+                })
+            } else {
+                mdui.snackbar({
+                    message: '注册成功',
+                    position: 'top',
+                })
+                setUserInfo(jsonData.data[0])
+                window.location.href = '/'
+            }
+        },
+        error: function (data) {
+            mdui.snackbar({
+                message: '发生了一些异常',
+                position: 'top',
+            })
         }
     })
 }

@@ -41,7 +41,7 @@
     </div>
     <div class="mdui-container" style="margin-top: 20px">
         <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-text-color-white mdui-center"
-                style="max-width: 200px;width: 100%;background-color: #ff5722!important">注册
+                style="max-width: 200px;width: 100%;background-color: #ff5722!important" onclick="toRegisterPage()">注册
         </button>
     </div>
 </div>
@@ -55,6 +55,10 @@
         let account = $('#account').val();
         let password = $('#password').val();
         login(account, password);
+    }
+
+    function toRegisterPage() {
+        window.location.href = '/view/user/register'
     }
 </script>
 </body>

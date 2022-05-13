@@ -3,6 +3,7 @@ package user
 import (
 	"gs-reader-lite/server/api/controller"
 	"gs-reader-lite/server/api/service/user"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,11 +14,11 @@ func (ctl *Controller) RegisterUser(req *gin.Context) {
 		return
 	}
 
-	userInfo, err := user.RegisterUserByPassword(reqData.Username, reqData.Password, reqData.Email, reqData.Mobile)
+	userInfo, err := user.RegisterUserByPassword(reqData.Username, reqData.Password, reqData.Email, strconv.Itoa(reqData.Mobile))
 	if err != nil {
 		controller.JsonExit(req, 1, err.Error())
 	} else {
-		controller.JsonExit(req, 1, "success", userInfo)
+		controller.JsonExit(req, 0, "success", userInfo)
 	}
 
 }
