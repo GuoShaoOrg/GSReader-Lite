@@ -13,7 +13,7 @@ func (ctl *Controller) Home(req *gin.Context) {
 	req.HTML(http.StatusOK, "index.html", gin.H{})
 }
 
-func (ctl *Controller) FeedItemListTmpl(req *gin.Context) {
+func (ctl *Controller) UserAllFeedItemListTmpl(req *gin.Context) {
 	var reqData *ctlFeed.ItemListByUserIdReqData
 	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
