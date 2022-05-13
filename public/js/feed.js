@@ -22,7 +22,7 @@ function AddFeedChannelByUserID() {
         success: function (data) {
             let jsonData = JSON.parse(data)
             if (jsonData.error === 0) {
-
+                $('#rss-link').val("")
             }
             mdui.snackbar({
                 message: jsonData.msg,
