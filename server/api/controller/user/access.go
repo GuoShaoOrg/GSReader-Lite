@@ -32,6 +32,6 @@ func (ctl *Controller) Login(req *gin.Context) {
 	if err != nil {
 		controller.JsonExit(req, 1, "账号或密码不正确")
 	} else {
-		controller.JsonExit(req, 1, "success", userInfo)
+		controller.JsonExit(req, 0, "success", userInfo)
 	}
 }

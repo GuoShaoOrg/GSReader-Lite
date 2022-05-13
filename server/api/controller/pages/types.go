@@ -7,3 +7,7 @@ type Controller struct {
 }
 
 var PagesCtl = &Controller{}
+
+type HomeReqData struct {
+	UserId string `form:"userId" binding:"required"`
+}
