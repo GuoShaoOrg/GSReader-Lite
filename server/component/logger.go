@@ -10,7 +10,7 @@ import (
 var logger *glog.Logger
 
 func Logger() *glog.Logger {
-	
+
 	if logger != nil {
 		return logger
 	}
@@ -18,10 +18,14 @@ func Logger() *glog.Logger {
 	logger = glog.New()
 	pwd, _ := os.Getwd()
 	logPath := pwd + "/log"
+	stdout := false
+	if os.Getenv("env") == "dev" {
+		stdout = true
+	}
 	_ = logger.SetConfigWithMap(g.Map{
 		"path":     logPath,
 		"level":    "all",
-		"stdout":   false,
+		"stdout":   stdout,
 		"StStatus": 0,
 	})
 
