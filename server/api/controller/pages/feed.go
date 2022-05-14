@@ -10,7 +10,9 @@ import (
 )
 
 func (ctl *Controller) Home(req *gin.Context) {
-	req.HTML(http.StatusOK, "index.html", gin.H{})
+	req.HTML(http.StatusOK, "index.html", gin.H{
+		"loadMoreBtn": "点击加载更多",
+	})
 }
 
 func (ctl *Controller) UserAllFeedItemListTmpl(req *gin.Context) {
@@ -22,7 +24,7 @@ func (ctl *Controller) UserAllFeedItemListTmpl(req *gin.Context) {
 	itemList := feed.GetFeedItemListByUserId(ctx, reqData.UserId, reqData.Start, reqData.Size)
 	var message string
 	if len(itemList) == 0 {
-		message = "您还没有订阅任何文章"
+		message = "没有更多的文章了，请订阅更多的文章"
 	}
 	req.HTML(http.StatusOK, "feed-item-list.html", gin.H{
 		"items":   itemList,

@@ -58,12 +58,20 @@
 			</button>
 			<span class="mdui-typo-title mdui-text-color-white" id="toolbar-title"></span>
 			<div class="mdui-toolbar-spacer"></div>
+			<a href="javascript:;" class="mdui-btn mdui-btn-icon" id="toolbar-feed-refresh-btn" onclick="refreshFeedItems()">
+				<i class="mdui-icon material-icons mdui-text-color-white">refresh</i>
+			</a>
 		</div>
 		<div class="mdui-center" style="padding-top: 56px;max-width: 800px">
 			<div class="mdui-container" id="home-container">
 				<ul class="mdui-list" id="feed-item-list">
 
 				</ul>
+				<div class="mdui-valign">
+					<div class="mdui-center">
+						<button class="mdui-btn mdui-ripple" id="load-more-items" onclick="loadFeedItemByUserID()">{{.loadMoreBtn}}</button>
+					</div>
+				</div>
 			</div>
 			<div class="mdui-container" id="sub-container">
 				sub
@@ -158,7 +166,12 @@
 			$('#search-container').hide()
 			$('#fav-container').hide()
 			$('#add-container').hide()
+			$('#toolbar-feed-refresh-btn').hide()
 			$("#" + name + "-container").show()
+
+			if (name === 'home') {
+				$('#toolbar-feed-refresh-btn').show()
+			}
 
 			if (containerInitStatus[name] === 1) {
 				return
@@ -170,27 +183,10 @@
 		function getContainerHtml(name) {
 			switch (name) {
 				case 'home':
-					$.ajax({
-						method: 'GET',
-						url: '/view/all/feed/item/list',
-						data: {
-							userId: userInfo.uid,
-							start: 0,
-							size: 10
-						},
-						success: function (data) {
-							$('#feed-item-list').append(data)
-						}
-					});
+					loadFeedItemByUserID()
 					break;
 				case 'add':
-					$.ajax({
-						method: 'GET',
-						url: '/view/feed/add',
-						success: function (data) {
-							$('#add-container').append(data)
-						}
-					});
+					AddChannelByLinkWithUserID()
 					break;
 				default:
 					break;

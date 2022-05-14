@@ -37,3 +37,41 @@ function AddFeedChannelByUserID() {
         }
     })
 }
+
+var itemStart = 0
+var itemSize = 10
+function loadFeedItemByUserID() {
+    $.ajax({
+        method: 'GET',
+        url: '/view/all/feed/item/list',
+        data: {
+            userId: userInfo.uid,
+            start: itemStart,
+            size: itemSize
+        },
+        success: function (data) {
+            if (data.includes('id="no-more-items"')) {
+                $('#load-more-items').hide()
+            }
+            $('#feed-item-list').append(data)
+            itemStart = itemStart + 10
+        }
+    });
+}
+
+function refreshFeedItems() {
+    $('#feed-item-list').empty()
+    itemStart = 0
+    $('#load-more-items').show()
+    loadFeedItemByUserID()
+}
+
+function AddChannelByLinkWithUserID() {
+    $.ajax({
+        method: 'GET',
+        url: '/view/feed/add',
+        success: function (data) {
+            $('#add-container').append(data)
+        }
+    });
+}

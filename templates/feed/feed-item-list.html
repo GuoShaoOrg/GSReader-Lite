@@ -1,6 +1,6 @@
 {{ $itemLen := len .items }}
 {{ if lt $itemLen 1 }}
-<div class="mdui-container">
+<div class="mdui-container" id="no-more-items">
     <div class="mdui-valign">
         <p class="mdui-center">{{ .message }}</p>
     </div>
