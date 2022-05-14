@@ -7,7 +7,7 @@
 </div>
 {{ else }}
 {{ range .subChannelList}}
-<li class="mdui-list-item mdui-ripple" onclick="toFeedChannelPage('{{.Id}}')">
+<li class="mdui-list-item mdui-ripple" style="padding-left: 15px;" onclick="toFeedChannelPage('{{.Id}}')">
     <div class="mdui-list-item-avatar">
         <img src="{{if .ImageUrl}}{{.ImageUrl}} {{else}}/public/favicon.ico{{end}}" />
     </div>
