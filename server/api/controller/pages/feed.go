@@ -98,6 +98,7 @@ func (ctl *Controller) GetFeedChannelPageTmpl(req *gin.Context) {
 		"channelInfo":     channelInfo,
 		"toolBarTitle":    channelInfo.Title,
 		"loadMoreBtnText": "点击加载更多",
+		"title":           "锅烧阅读",
 	})
 }
 
