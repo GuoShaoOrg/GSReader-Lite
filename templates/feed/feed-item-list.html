@@ -11,9 +11,9 @@
 
     <div class="mdui-card-header">
         <img class="mdui-card-header-avatar"
-            src="{{if .ChannelImageUrl}}{{.ChannelImageUrl}} {{else}}/public/favicon.ico{{end}}" />
+            src="{{if .ChannelImageUrl}}{{.ChannelImageUrl}} {{else}}/public/favicon.ico{{end}}"  onclick="toFeedChannelPage('{{.ChannelId}}')"/>
         <a class="mdui-card-header-title" href="{{ .Link }}" target="_blank">{{.Title}}</a>
-        <div class="mdui-card-header-subtitle">{{.ChannelTitle}}</div>
+        <div class="mdui-card-header-subtitle" onclick="toFeedChannelPage('{{.ChannelId}}')">{{.ChannelTitle}}</div>
     </div>
 
     <div class="mdui-card-media">
