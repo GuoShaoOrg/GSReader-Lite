@@ -2,6 +2,7 @@ package routers
 
 import (
 	"context"
+	"flag"
 	"gs-reader-lite/public"
 	"gs-reader-lite/server/api/controller/feed"
 	"gs-reader-lite/server/api/controller/pages"
@@ -20,7 +21,15 @@ func InitRouter() {
 	router := gin.Default()
 	initPages(router)
 	initV1API(router)
-	err := router.Run(":8083")
+	var err error
+	if os.Getenv("env") == "dev" {
+		err = router.Run(":8083")
+	} else {
+		port := flag.String("port", "80", "listen port")
+		flag.Parse()
+		err = router.Run(":"+*port)
+	}
+
 	if err != nil {
 		ctx := context.Background()
 		component.Logger().Error(ctx, err.Error())
