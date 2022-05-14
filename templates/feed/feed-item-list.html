@@ -7,7 +7,7 @@
 </div>
 {{ else }}
 {{ range .items}}
-<div class="mdui-card">
+<div class="mdui-card" style="margin-top: 20px;">
 
     <div class="mdui-card-header">
         <img class="mdui-card-header-avatar"
@@ -20,7 +20,7 @@
         <img src="{{.Thumbnail}}" alt="" />
     </div>
 
-    <div class="mdui-card-content mdui-ripple" onclick="toItemSourcePage('{{ .Link }}')">{{.Description}}</div>
+    <div class="mdui-card-content mdui-ripple feed-item-description-tag" onclick="toItemSourcePage('{{ .Link }}')">{{.Description}}</div>
 
     <div class="mdui-card-actions">
         <button class="mdui-btn mdui-ripple">

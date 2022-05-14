@@ -12,7 +12,7 @@ function AddFeedChannelByUserID() {
         userId: userId
     }
     $.ajax({
-        headers:{
+        headers: {
             Authorization: token + "@@" + userId
         },
         method: 'POST',
@@ -54,9 +54,16 @@ function loadFeedItemByUserID() {
                 $('#load-more-items').hide()
             }
             $('#feed-item-list').append(data)
+            parseDescriptionStringToHtml()
             itemStart = itemStart + 10
         }
     });
+}
+
+function parseDescriptionStringToHtml() {
+    $('#feed-item-list').find('.feed-item-description-tag').each(function (index, element) {
+        $(this).html($(this).text())
+    })
 }
 
 function refreshFeedItems() {
