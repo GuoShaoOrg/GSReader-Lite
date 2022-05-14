@@ -18,31 +18,31 @@
 	<div class="mdui-drawer" id="left-drawer">
 		<ul class="mdui-list" mdui-collapse="{accordion: true}" id="drawer-list">
 			<li class="mdui-subheader">{{.userSubHeader}}</li>
-			<li class="mdui-list-item mdui-ripple" mdui-drawer-close>
+			<li class="mdui-list-item mdui-ripple" >
 				<i class="mdui-list-item-icon mdui-icon material-icons">account_circle</i>
 				<a class="mdui-list-item-content" id="drawer-username"></a>
 			</li>
 			<li class="mdui-subheader">Feed</li>
 			<li class='mdui-list-item mdui-ripple {{ if eq .feedDrawerTab "home"}}mdui-list-item-active{{ end }}'
-				mdui-drawer-close id="drawer-home-item">
+				 id="drawer-home-item">
 				<i class='mdui-list-item-icon mdui-icon material-icons {{ if eq .feedDrawerTab "home"}}mdui-text-color-theme{{ end }}'
 					id="drawer-home-item-icon">rss_feed</i>
 				<a href="/view/" class="mdui-list-item-content">{{.homeTitle}}</a>
 			</li>
 			<li class='mdui-list-item mdui-ripple {{ if eq .feedDrawerTab "search"}}mdui-list-item-active{{ end }}'
-				mdui-drawer-close id="drawer-search-item">
+				 id="drawer-search-item">
 				<i class='mdui-list-item-icon mdui-icon material-icons {{ if eq .feedDrawerTab "search"}}mdui-text-color-theme{{ end }}'
 					id="drawer-search-item-icon">search</i>
 				<a href="/view/search" class="mdui-list-item-content">{{.searchTitle}}</a>
 			</li>
 			<li class='mdui-list-item mdui-ripple {{ if eq .feedDrawerTab "fav"}}mdui-list-item-active{{ end }}'
-				mdui-drawer-close id="drawer-fav-item">
+				 id="drawer-fav-item">
 				<i class='mdui-list-item-icon mdui-icon material-icons {{ if eq .feedDrawerTab "fav"}}mdui-text-color-theme{{ end }}'
 					id="drawer-fav-item-icon">favorite_border</i>
 				<a href="/view/fav" class="mdui-list-item-content">{{.favTitle}}</a>
 			</li>
 			<li class='mdui-list-item mdui-ripple {{ if eq .feedDrawerTab "add"}}mdui-list-item-active{{ end }}'
-				mdui-drawer-close id="drawer-add-item">
+				 id="drawer-add-item">
 				<i class='mdui-list-item-icon mdui-icon material-icons {{ if eq .feedDrawerTab "add"}}mdui-text-color-theme{{ end }}'
 					id="drawer-add-item-icon">add_circle_outline</i>
 				<a href="/view/add" class="mdui-list-item-content">{{.addTitle}}</a>
