@@ -86,8 +86,8 @@ func GetSubChannelListByUserId(ctx context.Context, userId string, start, size i
 	if err := component.GetDatabase().Table("user_sub_channel usc").
 		Select("rfc.*, usc.status as sub").
 		Joins("inner join rss_feed_channel rfc on usc.channel_id=rfc.id").
-		Joins("left join user_sub_channel usc on usc.channel_id=rfc.id").
 		Where("usc.user_id", userId).
+		Where("usc.status", 1).
 		Limit(size).
 		Offset(start).
 		Find(&feedList); err != nil {

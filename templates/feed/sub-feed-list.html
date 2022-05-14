@@ -1,0 +1,17 @@
+{{ $subChannelListLen := len .subChannelList }}
+{{ if lt $subChannelListLen 1 }}
+<div class="mdui-container" id="no-sub-items">
+    <div class="mdui-valign">
+        <p class="mdui-center">{{ .message }}</p>
+    </div>
+</div>
+{{ else }}
+{{ range .subChannelList}}
+<li class="mdui-list-item mdui-ripple" onclick="toFeedChannelPage('{{.Id}}')">
+    <div class="mdui-list-item-avatar">
+        <img src="{{if .ImageUrl}}{{.ImageUrl}} {{else}}/public/favicon.ico{{end}}" />
+    </div>
+    <div class="mdui-list-item-content">{{.Title}}</div>
+</li>
+{{ end }}
+{{ end }}

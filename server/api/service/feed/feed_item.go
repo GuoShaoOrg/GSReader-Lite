@@ -117,7 +117,7 @@ func GetFeedItemByChannelId(ctx context.Context, start, size int, channelId, use
 
 	if userId != "" {
 		if err := component.GetDatabase().Table("rss_feed_item rfi").
-			Select(model.RFIWithoutContentFieldSql+", rfc.rsshub_link as rsshubLink, rfc.title as channelTitle, rfc.image_url as channelImageUrl, umfi.status as marked, usc.status as sub").
+			Select(model.RFIWithoutContentFieldSql+", rfc.rss_link as rssLink, rfc.title as channelTitle, rfc.image_url as channelImageUrl, umfi.status as marked, usc.status as sub").
 			Joins("left join rss_feed_channel rfc on rfi.channel_id=rfc.id").
 			Joins("left join user_sub_channel usc on usc.channel_id=rfi.channel_id and usc.user_id="+"'"+userId+"'").
 			Joins("left join user_mark_feed_item umfi on umfi.channel_item_id=rfi.id and umfi.user_id="+"'"+userId+"'").

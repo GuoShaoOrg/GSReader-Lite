@@ -75,3 +75,23 @@ function AddChannelByLinkWithUserID() {
         }
     });
 }
+
+function getSubChannelListTmpl() {
+    let userInfo = getUserInfo()
+    let userId = ""
+    if (userInfo !== null) {
+        userId = userInfo.uid
+    }
+    $.ajax({
+        method: 'GET',
+        url: '/view/feed/sub_list',
+        data: {
+            userId: userId,
+            start: 0,
+            size: 10,
+        },
+        success: function (data) {
+            $('#sub-channel-drawer-list').append(data)
+        }
+    });
+}

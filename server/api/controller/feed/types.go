@@ -21,21 +21,21 @@ type TagReqData struct {
 }
 
 type ChannelReqData struct {
-	Start int `form:"start"`
-	Size  int `form:"size"`
+	Start int    `form:"start"`
+	Size  int    `form:"size"`
 	Name  string `form:"name" binding:"required"`
 }
 
 type ItemListByChannelIdReqData struct {
-	Start int `form:"start"`
-	Size  int `form:"size"`
-	ChannelId string `binding:"required"`
-	UserId    string
+	Start     int    `form:"start"`
+	Size      int    `form:"size"`
+	ChannelId string `form:"channelId" binding:"required"`
+	UserId    string `form:"userId"`
 }
 
 type ItemListByUserIdReqData struct {
-	Start int `form:"start"`
-	Size  int `form:"size"`
+	Start  int    `form:"start"`
+	Size   int    `form:"size"`
 	UserId string `form:"userId" binding:"required"`
 }
 
@@ -45,20 +45,20 @@ type SubChannelByUserIdAndChannelIdReqData struct {
 }
 
 type GetSubChannelByUserIdReqData struct {
-	UserID string `binding:"required"`
-	Start int `form:"start"`
-	Size  int `form:"size"`
+	UserID string `form:"userId" binding:"required"`
+	Start  int    `form:"start"`
+	Size   int    `form:"size"`
 }
 
 type GetChannelCatalogListByTagReqData struct {
 	TagName string `binding:"required"`
-	Start int `form:"start"`
-	Size  int `form:"size"`
+	Start   int    `form:"start"`
+	Size    int    `form:"size"`
 }
 
 type LatestFeedItemReqData struct {
-	Start int   `form:"start"`
-	Size  int	`form:"size"`
+	Start int `form:"start"`
+	Size  int `form:"size"`
 }
 
 type MarkFeedItemReqData struct {
@@ -68,26 +68,26 @@ type MarkFeedItemReqData struct {
 
 type GetMarkFeedItemListReqData struct {
 	UserId string `binding:"required"`
-	Start int `form:"start"`
-	Size  int `form:"size"`
+	Start  int    `form:"start"`
+	Size   int    `form:"size"`
 }
 
 type SearchFeedItemReqData struct {
 	Keyword string `form:"keyword" binding:"required"`
-	Start int `form:"start"`
-	Size  int `form:"size"`
+	Start   int    `form:"start"`
+	Size    int    `form:"size"`
 }
 
 type GetChannelCatalogListByUserIdReqData struct {
 	UserId string `binding:"required"`
-	Start int `form:"start"`
-	Size  int `form:"size"`
+	Start  int    `form:"start"`
+	Size   int    `form:"size"`
 }
 
 type GetRandomFeedItemListByUserIdReqData struct {
 	UserId string `form:"userId" binding:"required"`
-	Start int `form:"start"`
-	Size  int `form:"size"`
+	Start  int    `form:"start"`
+	Size   int    `form:"size"`
 }
 
 type GetChannelInfoByChannelUserIdReqData struct {
@@ -106,12 +106,12 @@ type AddFeedChannelByLinkReqData struct {
 }
 
 type AddFeedItemReqData struct {
-	Id            string      `json:"id"`
-	ChannelId     string      `json:"channelId"`
-	Title         string      `json:"title"`
-	Description   string      `json:"description"`
-	Link          string      `json:"link"`
-	Author        string      `json:"author"`
-	Thumbnail     string      `json:"thumbnail"`
-	Content       string      `json:"content"`
+	Id          string `json:"id"`
+	ChannelId   string `json:"channelId"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Link        string `json:"link"`
+	Author      string `json:"author"`
+	Thumbnail   string `json:"thumbnail"`
+	Content     string `json:"content"`
 }

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
+    <!-- MDUI CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/css/mdui.min.css" />
+    <title>{{.title}}</title>
+</head>
+
+<body class="mdui-theme-primary-deep-orange">
+    <div class="mdui-appbar" style="position: fixed; top: 0;z-index: 1001; width: 100%;">
+        <div class="mdui-toolbar mdui-color-theme">
+            <span class="mdui-typo-title mdui-text-color-white mdui-center" id="toolbar-title">{{.toolBarTitle}}</span>
+        </div>
+    </div>
+    <div class="mdui-center" style="padding-top: 56px;max-width: 800px">
+        <div class="mdui-container" id="home-container">
+            <ul class="mdui-list" id="feed-channel-item-list">
+
+            </ul>
+            <div class="mdui-valign">
+                <div class="mdui-center">
+                    <button class="mdui-btn mdui-ripple" id="feed-channel-item-load-more"
+                        onclick="loadFeedChannelItem()">{{.loadMoreBtnText}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MDUI JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
+    <script src="/public/js/common.js"></script>
+    <script src="/public/js/verify.js"></script>
+    <script>
+        var itemStart = 0
+        var itemSize = 10
+        function loadFeedChannelItem() {
+            userInfo = getUserInfo()
+            $.ajax({
+                method: 'GET',
+                url: '/view/feed/channel/items/',
+                data: {
+                    userId: userInfo.uid,
+                    start: itemStart,
+                    size: itemSize,
+                    channelId: '{{.channelInfo.Id}}'
+                },
+                success: function (data) {
+                    if (data.includes('id="no-more-items"')) {
+                        $('#feed-channel-item-load-more').hide()
+                    }
+                    $('#feed-channel-item-list').append(data)
+                    itemStart = itemStart + 10
+                }
+            });
+        }
+        function toItemSourcePage(link) {
+            window.open(link, '_blank')
+        }
+        loadFeedChannelItem()
+    </script>
+</body>
+
+</html>
