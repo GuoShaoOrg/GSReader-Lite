@@ -27,6 +27,7 @@ func InitRouter() {
 	} else {
 		port := flag.String("port", "80", "listen port")
 		flag.Parse()
+		gin.SetMode(gin.ReleaseMode)
 		err = router.Run(":"+*port)
 	}
 
