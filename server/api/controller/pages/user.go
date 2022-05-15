@@ -7,9 +7,9 @@ import (
 )
 
 func (ctl *Controller) Login(req *gin.Context) {
-	req.HTML(http.StatusOK, "login.html", gin.H{})
+	req.HTML(http.StatusOK, "access/login.html", gin.H{})
 }
 
 func (ctl *Controller) Register(req *gin.Context) {
-	req.HTML(http.StatusOK, "register.html", gin.H{})
+	req.HTML(http.StatusOK, "access/register.html", gin.H{})
 }

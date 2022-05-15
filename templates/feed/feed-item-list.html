@@ -1,3 +1,4 @@
+{{ define "feed/feed-item-list.html" }}
 {{ $itemLen := len .items }}
 {{ if lt $itemLen 1 }}
 <div class="mdui-container" id="no-more-items">
@@ -30,5 +31,6 @@
     </div>
 
 </div>
+{{ end }}
 {{ end }}
 {{ end }}

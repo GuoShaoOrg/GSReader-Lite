@@ -1,3 +1,4 @@
+{{ define "feed/sub-feed-list.html" }}
 {{ $subChannelListLen := len .subChannelList }}
 {{ if lt $subChannelListLen 1 }}
 <div class="mdui-container" id="no-sub-items">
@@ -13,5 +14,6 @@
     </div>
     <div class="mdui-list-item-content">{{.Title}}</div>
 </li>
+{{ end }}
 {{ end }}
 {{ end }}
