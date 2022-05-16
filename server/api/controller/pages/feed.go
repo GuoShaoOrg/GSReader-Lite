@@ -65,7 +65,7 @@ func (ctl *Controller) UserAllFeedItemListTmpl(req *gin.Context) {
 	if len(itemList) == 0 {
 		message = "没有更多的文章了，请订阅更多的频道"
 	}
-	req.HTML(http.StatusOK, "feed/feed-item-list.html", gin.H{
+	req.HTML(http.StatusOK, "feed/feedItemList.html", gin.H{
 		"items":   itemList,
 		"message": message,
 	})
@@ -94,7 +94,7 @@ func (ctl *Controller) GetFeedChannelPageTmpl(req *gin.Context) {
 	channelId := req.Param("channelId")
 	userId := req.Param("userId")
 	channelInfo := feed.GetChannelInfoByChannelAndUserId(context.Background(), userId, channelId)
-	req.HTML(http.StatusOK, "feed/channel-item-page.html", gin.H{
+	req.HTML(http.StatusOK, "feed/channelPage.html", gin.H{
 		"channelInfo":     channelInfo,
 		"toolBarTitle":    channelInfo.Title,
 		"loadMoreBtnText": "点击加载更多",
@@ -115,7 +115,7 @@ func (ctl *Controller) GetFeedChannelItemListTmpl(req *gin.Context) {
 	if len(channleItemList) == 0 {
 		message = "频道还没更多文章了"
 	}
-	req.HTML(http.StatusOK, "feed/feed-item-list.html", gin.H{
+	req.HTML(http.StatusOK, "feed/feedItemList.html", gin.H{
 		"items":   channleItemList,
 		"message": message,
 	})
