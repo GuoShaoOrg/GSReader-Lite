@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
 {{template "base/header.html" .}}
 
 <body class="mdui-drawer-body-left mdui-theme-primary-deep-orange">
@@ -6,7 +8,7 @@
 		{{ template "base/toolbar.html" .}}
 		<div class="mdui-center" style="padding-top: 56px;max-width: 800px">
 			{{ if eq .feedDrawerTab "home"}}
-			{{ template "pages/allItemList.html" .}}
+			{{ template "component/allItemList.html" .}}
 			{{ end }}
 			{{ if eq .feedDrawerTab "add"}}
 			{{ template "pages/addChannelPage.html" .}}
