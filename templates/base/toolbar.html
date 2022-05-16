@@ -1,0 +1,14 @@
+{{ define "base/toolbar.html" }}
+<div class="mdui-toolbar mdui-color-theme" style="position: fixed; top: 0;z-index: 1001">
+    <button class="mdui-btn" id="menu-btn" mdui-drawer="{target: '#left-drawer'}">
+        <i class="mdui-icon material-icons  mdui-text-color-white">menu</i>
+    </button>
+    <span class="mdui-typo-title mdui-text-color-white" id="toolbar-title">{{.toolBarTitle}}</span>
+    <div class="mdui-toolbar-spacer"></div>
+    {{ if eq .feedDrawerTab "home"}}
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" id="toolbar-feed-refresh-btn" onclick="refreshFeedItems()">
+        <i class="mdui-icon material-icons mdui-text-color-white">refresh</i>
+    </a>
+    {{ end }}
+</div>
+{{ end }}

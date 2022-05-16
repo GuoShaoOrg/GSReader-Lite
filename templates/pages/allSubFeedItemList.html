@@ -1,0 +1,13 @@
+{{ define "pages/allItemList.html" }}
+<div class="mdui-container" id="home-container">
+    <ul class="mdui-list" id="feed-item-list">
+
+    </ul>
+    <div class="mdui-valign">
+        <div class="mdui-center">
+            <button class="mdui-btn mdui-ripple" id="load-more-items"
+                onclick="loadFeedItemByUserID()">{{.loadMoreBtn}}</button>
+        </div>
+    </div>
+</div>
+{{ end }}

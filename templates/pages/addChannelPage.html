@@ -1,0 +1,14 @@
+{{ define "pages/addChannelPage.html" }}
+<div class="mdui-container">
+    <div class="mdui-textfield mdui-textfield-floating-label mdui-center" style="max-width: 500px">
+        <label class="mdui-textfield-label">{{.RSSLink}}</label>
+        <input id="rss-link" class="mdui-textfield-input" required />
+    </div>
+    <div class="mdui-container" style="margin-top: 20px">
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-text-color-white mdui-center"
+            style="max-width: 200px;width: 100%;background-color: #ff5722!important"
+            onclick="AddFeedChannelByUserID()">{{.AddBtnText}}
+        </button>
+    </div>
+</div>
+{{ end }}
