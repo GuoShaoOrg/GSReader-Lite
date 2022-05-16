@@ -86,7 +86,7 @@ func (ctl *Controller) GetFeedChannelPageTmpl(req *gin.Context) {
 	channelId := req.Param("channelId")
 	userId := req.Param("userId")
 	channelInfo := feed.GetChannelInfoByChannelAndUserId(context.Background(), userId, channelId)
-	req.HTML(http.StatusOK, "feed/channelPage.html", gin.H{
+	req.HTML(http.StatusOK, "page/channelPage.html", gin.H{
 		"channelInfo":     channelInfo,
 		"toolBarTitle":    channelInfo.Title,
 		"loadMoreBtnText": "点击加载更多",
