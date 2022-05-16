@@ -84,7 +84,7 @@ func (ctl *Controller) GetSubFeedChannelListTmpl(req *gin.Context) {
 	if len(subChannelList) == 0 {
 		message = "您还没有订阅任何频道"
 	}
-	req.HTML(http.StatusOK, "feed/sub-feed-list.html", gin.H{
+	req.HTML(http.StatusOK, "feed/subedFeedList.html", gin.H{
 		"subChannelList": subChannelList,
 		"message":        message,
 	})
