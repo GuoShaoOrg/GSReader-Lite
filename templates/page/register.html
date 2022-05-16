@@ -50,6 +50,49 @@
             let vPassword = $('#vPassword').val();
             register(account, password, vPassword);
         }
+
+        function register(account, password, vPassword) {
+            let email = ""
+            let mobile = 0
+            if (isEmail(account)) {
+                email = account
+            } else if (isMobile(account)) {
+                mobile = account
+            }
+            let postData = {
+                password: password,
+                passwordVerify: vPassword,
+                email: email,
+                mobile: parseInt(mobile),
+            }
+            $.ajax({
+                method: 'POST',
+                url: '/v1/api/user/register',
+                data: JSON.stringify(postData),
+                success: function (data) {
+                    let jsonData = JSON.parse(data)
+                    if (jsonData.error !== 0) {
+                        mdui.snackbar({
+                            message: jsonData.msg,
+                            position: 'top',
+                        })
+                    } else {
+                        mdui.snackbar({
+                            message: '注册成功',
+                            position: 'top',
+                        })
+                        setUserInfo(jsonData.data[0])
+                        window.location.href = '/'
+                    }
+                },
+                error: function (data) {
+                    mdui.snackbar({
+                        message: '发生了一些异常',
+                        position: 'top',
+                    })
+                }
+            })
+        }
     </script>
 </body>
 
