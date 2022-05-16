@@ -1,14 +1,68 @@
 {{ define "pages/addChannelPage.html" }}
-<div class="mdui-container">
-    <div class="mdui-textfield mdui-textfield-floating-label mdui-center" style="max-width: 500px">
-        <label class="mdui-textfield-label">{{.RSSLink}}</label>
-        <input id="rss-link" class="mdui-textfield-input" required />
+{{template "base/header.html" }}
+<body class="mdui-drawer-body-left mdui-theme-primary-deep-orange">
+    {{ template "base/drawer.html" .}}
+    <div class="mdui-container-fluid" style="padding-left: 0px;padding-right: 0px;">
+        {{ template "base/toolbar.html" .}}
+        <div class="mdui-center" style="padding-top: 56px;max-width: 800px">
+            <div class="mdui-container">
+                <div class="mdui-textfield mdui-textfield-floating-label mdui-center" style="max-width: 500px">
+                    <label class="mdui-textfield-label">{{.RSSLink}}</label>
+                    <input id="rss-link" class="mdui-textfield-input" required />
+                </div>
+                <div class="mdui-container" style="margin-top: 20px">
+                    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-text-color-white mdui-center"
+                        style="max-width: 200px;width: 100%;background-color: #ff5722!important"
+                        onclick="AddFeedChannelByUserID()">{{.AddBtnText}}
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="mdui-container" style="margin-top: 20px">
-        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-text-color-white mdui-center"
-            style="max-width: 200px;width: 100%;background-color: #ff5722!important"
-            onclick="AddFeedChannelByUserID()">{{.AddBtnText}}
-        </button>
-    </div>
-</div>
+
+    {{ template "index/script.html" }}
+    <script>
+        function AddFeedChannelByUserID() {
+            let rssLink = $('#rss-link').val()
+            let userInfo = getUserInfo()
+            let userId = ""
+            let token = ""
+            if (userInfo !== null) {
+                userId = userInfo.uid
+                token = userInfo.token
+            }
+            let postData = {
+                link: rssLink,
+                userId: userId
+            }
+            $.ajax({
+                headers: {
+                    Authorization: token + "@@" + userId
+                },
+                method: 'POST',
+                url: '/v1/api/feed/link/uid',
+                data: JSON.stringify(postData),
+                success: function (data) {
+                    let jsonData = JSON.parse(data)
+                    if (jsonData.error === 0) {
+                        $('#rss-link').val("")
+                    }
+                    mdui.snackbar({
+                        message: jsonData.msg,
+                        position: 'top',
+                    })
+                },
+                error: function (data) {
+                    let jsonData = JSON.parse(data)
+                    mdui.snackbar({
+                        message: jsonData.msg,
+                        position: 'top',
+                    })
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>
 {{ end }}

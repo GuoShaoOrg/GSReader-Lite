@@ -89,7 +89,6 @@ func initPages(router *gin.Engine) {
 	{
 		pageCtl := pages.PagesCtl
 		pagesGroup.GET("/", pageCtl.Index)
-		pagesGroup.GET("/sub", pageCtl.SubChannel)
 		pagesGroup.GET("/add", pageCtl.AddChannel)
 		pagesGroup.GET("/all/feed/item/list", pageCtl.UserAllFeedItemListTmpl)
 

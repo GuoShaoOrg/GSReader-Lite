@@ -36,14 +36,6 @@ func (ctl *Controller) Index(req *gin.Context) {
 	req.HTML(http.StatusOK, "index.html", getCommonTemplateMap(templateMap))
 }
 
-func (ctl *Controller) SubChannel(req *gin.Context) {
-	templateMap := gin.H{
-		"feedDrawerTab": "sub",
-		"toolBarTitle":  "已订阅源",
-	}
-	req.HTML(http.StatusOK, "index.html", getCommonTemplateMap(templateMap))
-}
-
 func (ctl *Controller) AddChannel(req *gin.Context) {
 	templateMap := gin.H{
 		"feedDrawerTab": "add",
@@ -51,7 +43,7 @@ func (ctl *Controller) AddChannel(req *gin.Context) {
 		"RSSLink":       "RSS链接",
 		"AddBtnText":    "添加订阅",
 	}
-	req.HTML(http.StatusOK, "index.html", getCommonTemplateMap(templateMap))
+	req.HTML(http.StatusOK, "pages/addChannelPage.html", getCommonTemplateMap(templateMap))
 }
 
 func (ctl *Controller) UserAllFeedItemListTmpl(req *gin.Context) {
