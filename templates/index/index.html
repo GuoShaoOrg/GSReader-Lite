@@ -3,9 +3,9 @@
 {{template "base/header.html" .}}
 
 <body class="mdui-drawer-body-left mdui-theme-primary-deep-orange">
+	{{ template "base/toolbar.html" .}}
 	{{ template "base/drawer.html" .}}
 	<div class="mdui-container-fluid" style="padding-left: 0px;padding-right: 0px;">
-		{{ template "base/toolbar.html" .}}
 		<div class="mdui-center" style="padding-top: 56px;max-width: 800px">
 			{{ if eq .feedDrawerTab "home"}}
 			{{ template "component/allItemList.html" .}}
@@ -26,6 +26,33 @@
 		loadFeedItemByUserID()
 
 		getSubChannelListTmpl()
+		var itemStart = 0
+		var itemSize = 10
+		function loadFeedItemByUserID() {
+			$.ajax({
+				method: 'GET',
+				url: '/view/all/feed/item/list',
+				data: {
+					userId: userInfo.uid,
+					start: itemStart,
+					size: itemSize
+				},
+				success: function (data) {
+					if (data.includes('id="no-more-items"')) {
+						$('#load-more-items').hide()
+					}
+					$('#feed-item-list').append(data)
+					parseDescriptionStringToHtml()
+					itemStart = itemStart + 10
+				}
+			});
+		}
+		function refreshFeedItems() {
+			$('#feed-item-list').empty()
+			itemStart = 0
+			$('#load-more-items').show()
+			loadFeedItemByUserID()
+		}
 
 		function toItemSourcePage(link) {
 			window.open(link, '_blank')
