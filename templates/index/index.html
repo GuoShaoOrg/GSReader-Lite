@@ -11,7 +11,7 @@
 			{{ template "component/allItemList.html" .}}
 			{{ end }}
 			{{ if eq .feedDrawerTab "add"}}
-			{{ template "pages/addChannelPage.html" .}}
+			{{ template "page/addChannelPage.html" .}}
 			{{ end }}
 			{{ if eq .feedDrawerTab "search"}}
 
@@ -31,7 +31,10 @@
 		function loadFeedItemByUserID() {
 			$.ajax({
 				method: 'GET',
-				url: '/view/all/feed/item/list',
+				headers: {
+					Authorization: getAuthToken()
+				},
+				url: '/view/api/feed/all/item/list',
 				data: {
 					userId: userInfo.uid,
 					start: itemStart,

@@ -17,6 +17,17 @@ function getUserInfo() {
     return null
 }
 
+function getAuthToken() {
+    let userInfo = getUserInfo()
+    let auth = ""
+    if (userInfo !== null) {
+        userId = userInfo.uid
+        token = userInfo.token
+    }
+    auth = token + "@@" + userId
+    return auth
+}
+
 function cleanUserInfo() {
     localStorage.removeItem("userInfo")
 }
@@ -48,7 +59,10 @@ function getSubChannelListTmpl() {
     }
     $.ajax({
         method: 'GET',
-        url: '/view/feed/sub_list',
+        headers: {
+            Authorization: getAuthToken()
+        },
+        url: '/view/api/feed/sub_list',
         data: {
             userId: userId,
             start: 0,
