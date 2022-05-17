@@ -27,9 +27,8 @@
         function AddFeedChannelByUserID() {
             let rssLink = $('#rss-link').val()
             let userInfo = getUserInfo()
-            let auth = ""
             if (userInfo !== null) {
-                userId = userInfo.auth
+                userId = userInfo.uid
             }
             let postData = {
                 link: rssLink,
@@ -37,7 +36,7 @@
             }
             $.ajax({
                 headers: {
-                    Authorization: auth
+                    Authorization: getAuthToken()
                 },
                 method: 'POST',
                 url: '/v1/api/feed/link/uid',

@@ -28,7 +28,7 @@ func InitRouter() {
 		port := flag.String("port", "80", "listen port")
 		flag.Parse()
 		gin.SetMode(gin.ReleaseMode)
-		err = router.Run(":"+*port)
+		err = router.Run(":" + *port)
 	}
 
 	if err != nil {
@@ -86,18 +86,25 @@ func initPages(router *gin.Engine) {
 
 	router.Use(middlewear.StaticRedirect())
 	pagesGroup := router.Group("/view")
+	pageCtl := pages.PagesCtl
 	{
-		pageCtl := pages.PagesCtl
 		pagesGroup.GET("/", pageCtl.Index)
 		pagesGroup.GET("/add", pageCtl.AddChannel)
-		pagesGroup.GET("/all/feed/item/list", pageCtl.UserAllFeedItemListTmpl)
+		pagesGroup.GET("/search/", pageCtl.GetSearchPageTmpl)
 
 		pagesGroup.GET("/user/login", pageCtl.Login)
 		pagesGroup.GET("/user/register", pageCtl.Register)
 
-		pagesGroup.GET("/feed/sub_list", pageCtl.GetSubFeedChannelListTmpl)
 		pagesGroup.GET("/feed/channel/info/:channelId/:userId", pageCtl.GetFeedChannelPageTmpl)
 		pagesGroup.GET("/feed/channel/items/", pageCtl.GetFeedChannelItemListTmpl)
 
+	}
+
+	pageAPIGroup := pagesGroup.Group("/api")
+	pageAPIGroup.Use(middlewear.AuthToken())
+	{
+		pageAPIGroup.GET("/feed/all/item/list", pageCtl.UserAllFeedItemListTmpl)
+		pageAPIGroup.GET("/feed/sub_list", pageCtl.GetSubFeedChannelListTmpl)
+		pagesGroup.GET("/search/result", pageCtl.GetSearchPageTmpl)
 	}
 }
