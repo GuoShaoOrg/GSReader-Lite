@@ -1,4 +1,4 @@
-{{ define "pages/addChannelPage.html" }}
+{{ define "page/addChannelPage.html" }}
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 {{template "base/header.html" .}}
@@ -27,11 +27,9 @@
         function AddFeedChannelByUserID() {
             let rssLink = $('#rss-link').val()
             let userInfo = getUserInfo()
-            let userId = ""
-            let token = ""
+            let auth = ""
             if (userInfo !== null) {
-                userId = userInfo.uid
-                token = userInfo.token
+                userId = userInfo.auth
             }
             let postData = {
                 link: rssLink,
@@ -39,7 +37,7 @@
             }
             $.ajax({
                 headers: {
-                    Authorization: token + "@@" + userId
+                    Authorization: auth
                 },
                 method: 'POST',
                 url: '/v1/api/feed/link/uid',
