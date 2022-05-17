@@ -25,10 +25,10 @@
 	<script>
 		var itemStart = 0
 		var itemSize = 10
-		loadFeedItemByUserID()
+		loadFeedItem()
 
 		getSubChannelListTmpl()
-		function loadFeedItemByUserID() {
+		function loadFeedItem() {
 			$.ajax({
 				method: 'GET',
 				headers: {
@@ -54,7 +54,7 @@
 			$('#feed-item-list').empty()
 			itemStart = 0
 			$('#load-more-items').show()
-			loadFeedItemByUserID()
+			loadMore()
 		}
 
 		function toItemSourcePage(link) {
