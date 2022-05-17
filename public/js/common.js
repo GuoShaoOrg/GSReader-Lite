@@ -1,6 +1,7 @@
 const $ = mdui.$
 
 function setUserInfo(userInfo) {
+    userInfo['auth'] = userInfo['token'] + "@@" + userInfo['uid']
     localStorage.setItem("userInfo", JSON.stringify(userInfo))
 }
 
