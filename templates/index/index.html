@@ -8,7 +8,7 @@
 	<div class="mdui-container-fluid" style="padding-left: 0px;padding-right: 0px;">
 		<div class="mdui-center" style="padding-top: 56px;max-width: 800px">
 			{{ if eq .feedDrawerTab "home"}}
-			{{ template "component/allItemList.html" .}}
+			{{ template "component/commonItemList.html" .}}
 			{{ end }}
 			{{ if eq .feedDrawerTab "add"}}
 			{{ template "page/addChannelPage.html" .}}
@@ -23,11 +23,11 @@
 	{{ template "index/script.html" }}
 	{{ if eq .feedDrawerTab "home"}}
 	<script>
+		var itemStart = 0
+		var itemSize = 10
 		loadFeedItemByUserID()
 
 		getSubChannelListTmpl()
-		var itemStart = 0
-		var itemSize = 10
 		function loadFeedItemByUserID() {
 			$.ajax({
 				method: 'GET',
