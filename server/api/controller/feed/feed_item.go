@@ -80,7 +80,7 @@ func (ctl *Controller) SearchFeedItem(req *gin.Context) {
 		return
 	}
 
-	resultSet := feed.SearchFeedItem(context.Background(),reqData.Keyword, reqData.Start, reqData.Size)
+	resultSet := feed.SearchFeedItem(context.Background(), reqData.UserId, reqData.Keyword, reqData.Start, reqData.Size)
 	controller.JsonExit(req, 0, "success", resultSet)
 }
 

@@ -51,7 +51,7 @@ type GetSubChannelByUserIdReqData struct {
 }
 
 type GetChannelCatalogListByTagReqData struct {
-	TagName string `binding:"required"`
+	TagName string `form:"tagName" binding:"required"`
 	Start   int    `form:"start"`
 	Size    int    `form:"size"`
 }
@@ -67,19 +67,20 @@ type MarkFeedItemReqData struct {
 }
 
 type GetMarkFeedItemListReqData struct {
-	UserId string `binding:"required"`
+	UserId string `form:"userId" binding:"required"`
 	Start  int    `form:"start"`
 	Size   int    `form:"size"`
 }
 
 type SearchFeedItemReqData struct {
+	UserId  string `form:"userId" binding:"required"`
 	Keyword string `form:"keyword" binding:"required"`
 	Start   int    `form:"start"`
 	Size    int    `form:"size"`
 }
 
 type GetChannelCatalogListByUserIdReqData struct {
-	UserId string `binding:"required"`
+	UserId string `json:"userId" binding:"required"`
 	Start  int    `form:"start"`
 	Size   int    `form:"size"`
 }

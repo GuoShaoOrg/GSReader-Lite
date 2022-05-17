@@ -1,5 +1,5 @@
 {{ define "base/toolbar.html" }}
-<div class="mdui-toolbar mdui-color-theme" style="position: fixed; top: 0;z-index: 1001">
+<div class="mdui-toolbar mdui-color-theme mdui-appbar-fixed" style="z-index: 1001">
     <button class="mdui-btn" id="menu-btn" mdui-drawer="{target: '#left-drawer'}">
         <i class="mdui-icon material-icons  mdui-text-color-white">menu</i>
     </button>
@@ -9,6 +9,17 @@
     <a href="javascript:;" class="mdui-btn mdui-btn-icon" id="toolbar-feed-refresh-btn" onclick="refreshFeedItems()">
         <i class="mdui-icon material-icons mdui-text-color-white">refresh</i>
     </a>
+    {{ end }}
+    {{ if eq .feedDrawerTab "search"}}
+    <div class="mdui-textfield mdui-textfield-expandable">
+        <button class="mdui-textfield-icon mdui-btn mdui-btn-icon" >
+            <i class="mdui-icon material-icons mdui-text-color-white">search</i>
+        </button>
+        <input id="toolbar-search-input" class="mdui-textfield-input" style="color: white;" type="text" placeholder="Search" />
+        <button class="mdui-textfield-close mdui-btn mdui-btn-icon">
+            <i class="mdui-icon material-icons mdui-text-color-white">close</i>
+        </button>
+    </div>
     {{ end }}
 </div>
 {{ end }}

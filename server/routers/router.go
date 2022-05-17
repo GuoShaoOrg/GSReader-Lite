@@ -105,6 +105,6 @@ func initPages(router *gin.Engine) {
 	{
 		pageAPIGroup.GET("/feed/all/item/list", pageCtl.UserAllFeedItemListTmpl)
 		pageAPIGroup.GET("/feed/sub_list", pageCtl.GetSubFeedChannelListTmpl)
-		pagesGroup.GET("/search/result", pageCtl.GetSearchPageTmpl)
+		pageAPIGroup.GET("/feed/search/result", pageCtl.GetSearchResultListTmpl)
 	}
 }

@@ -27,6 +27,7 @@
         function AddFeedChannelByUserID() {
             let rssLink = $('#rss-link').val()
             let userInfo = getUserInfo()
+            let userId = ""
             if (userInfo !== null) {
                 userId = userInfo.uid
             }

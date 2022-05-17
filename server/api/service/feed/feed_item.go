@@ -290,7 +290,7 @@ func GetFeedItemByItemId(ctx context.Context, itemId, userId string) (item biz.R
 	return
 }
 
-func SearchFeedItem(ctx context.Context, keyword string, start, size int) (item biz.RssFeedItemData) {
+func SearchFeedItem(ctx context.Context, userId, keyword string, start, size int) (items []biz.RssFeedItemData) {
 
 	if size == 0 {
 		size = 10
@@ -298,10 +298,20 @@ func SearchFeedItem(ctx context.Context, keyword string, start, size int) (item 
 
 	keywordArray := lib.GetJieBa().CutForSearch(keyword, true)
 	queryKeyword := strings.Join(keywordArray, " ")
-	queryString := "SELECT " + model.RFFTSIWithoutContentFieldSql + " FROM rss_feed_item_fts WHERE description_sp MATCH ? OR content_sp MATCH ? LIMIT ? OFFSET ?"
-	if err := component.GetDatabase().Raw(queryString, queryKeyword, queryKeyword, size, start).Scan(&item).Error; err != nil {
+	queryString := "(SELECT id FROM rss_feed_item_fts fts WHERE description_sp MATCH ? OR content_sp MATCH ? OR title_sp MATCH ? LIMIT ? OFFSET ?)"
+
+	if err := component.GetDatabase().Table("rss_feed_item rfi").
+		Select(model.RFIWithoutContentFieldSql+", rfc.rss_link as rssLink, rfc.title as channelTitle, rfc.image_url as channelImageUrl, umfi.status as marked, usc.status as sub").
+		Joins("inner join user_sub_channel usc on usc.channel_id=rfi.channel_id").
+		Joins("left join user_mark_feed_item umfi on umfi.channel_item_id=rfi.id").
+		Joins("inner join rss_feed_channel rfc on usc.channel_id=rfc.id").
+		Where("usc.user_id = ? and usc.status = 1", userId).
+		Where("rfi.id in "+queryString, queryKeyword, queryKeyword, queryKeyword, size, start).
+		Order("rfi.input_date desc").
+		Limit(size).
+		Offset(start).
+		Find(&items).Error; err != nil {
 		component.Logger().Error(ctx, err)
 	}
-
 	return
 }

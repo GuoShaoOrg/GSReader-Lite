@@ -43,7 +43,7 @@ func (ctl *Controller) AddChannel(req *gin.Context) {
 		"RSSLink":       "RSS链接",
 		"AddBtnText":    "添加订阅",
 	}
-	req.HTML(http.StatusOK, "pages/addChannelPage.html", getCommonTemplateMap(templateMap))
+	req.HTML(http.StatusOK, "page/addChannelPage.html", getCommonTemplateMap(templateMap))
 }
 
 func (ctl *Controller) UserAllFeedItemListTmpl(req *gin.Context) {
@@ -105,10 +105,39 @@ func (ctl *Controller) GetFeedChannelItemListTmpl(req *gin.Context) {
 	channleItemList := feed.GetFeedItemByChannelId(context.Background(), reqData.Start, reqData.Size, reqData.ChannelId, reqData.UserId)
 	var message string
 	if len(channleItemList) == 0 {
-		message = "频道还没更多文章了"
+		message = "频道没有更多文章了"
 	}
 	req.HTML(http.StatusOK, "feed/feedItemList.html", gin.H{
 		"items":   channleItemList,
 		"message": message,
+	})
+}
+
+func (ctl *Controller) GetSearchPageTmpl(req *gin.Context) {
+	templateMap := gin.H{
+		"feedDrawerTab":   "search",
+		"toolBarTitle":    "搜索",
+		"loadMoreBtnText": "点击加载更多",
+		"title":           "锅烧阅读",
+	}
+	req.HTML(http.StatusOK, "page/search.html", getCommonTemplateMap(templateMap))
+}
+
+func (ctl *Controller) GetSearchResultListTmpl(req *gin.Context) {
+	var reqData *ctlFeed.SearchFeedItemReqData
+	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
+		return
+	}
+	resultList := feed.SearchFeedItem(context.Background(), reqData.UserId, reqData.Keyword, reqData.Start, reqData.Size)
+	var message string
+	if len(resultList) == 0 {
+		message = "没有更多文章了"
+	}
+	req.HTML(http.StatusOK, "feed/feedItemList.html", gin.H{
+		"items":           resultList,
+		"toolBarTitle":    "搜索",
+		"loadMoreBtnText": "点击加载更多",
+		"title":           "锅烧阅读",
+		"message":         message,
 	})
 }

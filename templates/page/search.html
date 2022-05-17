@@ -9,15 +9,63 @@
         {{ template "base/toolbar.html" .}}
         <div class="mdui-center" style="padding-top: 56px;max-width: 800px">
             <div class="mdui-container">
-                saerch page
+                {{ template "component/commonItemList.html" .}}
             </div>
         </div>
     </div>
 
     {{ template "index/script.html" }}
     <script>
+        var searchItemStart = 0
+        var searchItemSize = 10
+        $('#load-more-items').hide()
+        document.addEventListener('keypress', function (e) {
+            if (e.keyCode === 13 || e.which === 13) {
+                e.preventDefault();
+                cleanSearchResult()
+                loadFeedItem()
+                return false;
+            }
 
+        });
+        function loadFeedItem() {
+            $('#load-more-items').show()
+            let userInfo = getUserInfo()
+            let userId = ""
+            if (userInfo !== null) {
+                userId = userInfo.uid
+            }
+            $.ajax({
+                method: 'GET',
+                headers: {
+                    Authorization: getAuthToken()
+                },
+                url: '/view/api/feed/search/result',
+                data: {
+                    userId: userId,
+                    keyword: $('#toolbar-search-input').val(),
+                    start: searchItemStart,
+                    size: searchItemSize
+                },
+                success: function (data) {
+                    if (data.includes('id="no-more-items"')) {
+                        $('#load-more-items').hide()
+                    }
+                    $('#feed-item-list').append(data)
+                    parseDescriptionStringToHtml()
+                    searchItemStart = searchItemStart + 10
+                }
+            });
+        }
+        function cleanSearchResult() {
+            $('#feed-item-list').empty()
+            searchItemStart = 0
+        }
+        function toItemSourcePage(link) {
+            window.open(link, '_blank')
+        }
     </script>
 </body>
+
 </html>
 {{ end }}
