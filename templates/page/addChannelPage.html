@@ -24,6 +24,7 @@
 
     {{ template "index/script.html" }}
     <script>
+        getSubChannelListTmpl()
         function AddFeedChannelByUserID() {
             let rssLink = $('#rss-link').val()
             let userInfo = getUserInfo()
