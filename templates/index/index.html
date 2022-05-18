@@ -23,9 +23,18 @@
 	{{ template "index/script.html" }}
 	{{ if eq .feedDrawerTab "home"}}
 	<script>
-		var itemStart = 0
-		var itemSize = 10
+		let itemStart = 0
+		let itemSize = 10
+		let hasMoreItem = true
 		loadFeedItem()
+
+		window.addEventListener('scroll', () => {
+			if (document.documentElement.scrollHeight - document.documentElement.clientHeight - document.documentElement.scrollTop < 1) {
+				if (hasMoreItem) {
+					loadFeedItem()
+				}
+			}
+		})
 
 		getSubChannelListTmpl()
 		function loadFeedItem() {
@@ -42,7 +51,9 @@
 				},
 				success: function (data) {
 					if (data.includes('id="no-more-items"')) {
-						$('#load-more-items').hide()
+						$('#feed-item-list').append(data)
+						hasMoreItem = false
+						return
 					}
 					$('#feed-item-list').append(data)
 					parseDescriptionStringToHtml()
@@ -53,7 +64,7 @@
 		function refreshFeedItems() {
 			$('#feed-item-list').empty()
 			itemStart = 0
-			$('#load-more-items').show()
+			hasMoreItem = true
 			loadMore()
 		}
 

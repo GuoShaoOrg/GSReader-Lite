@@ -17,8 +17,9 @@
     {{ template "index/script.html" }}
     <script>
         getSubChannelListTmpl()
-        var searchItemStart = 0
-        var searchItemSize = 10
+        let searchItemStart = 0
+        let searchItemSize = 10
+        let hasMoreItem = true
         $('#load-more-items').hide()
         document.addEventListener('keypress', function (e) {
             if (e.keyCode === 13 || e.which === 13) {
@@ -29,6 +30,15 @@
             }
 
         });
+
+        window.addEventListener('scroll', () => {
+            if (document.documentElement.scrollHeight - document.documentElement.clientHeight - document.documentElement.scrollTop < 1) {
+                if (hasMoreItem) {
+                    loadFeedItem()
+                }
+            }
+        })
+
         function loadFeedItem() {
             $('#load-more-items').show()
             let userInfo = getUserInfo()
@@ -51,6 +61,7 @@
                 success: function (data) {
                     if (data.includes('id="no-more-items"')) {
                         $('#load-more-items').hide()
+                        hasMoreItem = false
                     }
                     $('#feed-item-list').append(data)
                     parseDescriptionStringToHtml()
@@ -61,6 +72,7 @@
         function cleanSearchResult() {
             $('#feed-item-list').empty()
             searchItemStart = 0
+            hasMoreItem = true
         }
         function toItemSourcePage(link) {
             window.open(link, '_blank')
