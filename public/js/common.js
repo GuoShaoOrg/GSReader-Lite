@@ -8,6 +8,7 @@ function setUserInfo(userInfo) {
 function getUserInfo() {
     let userInfo = JSON.parse(localStorage.getItem("userInfo"))
     if (userInfo === undefined || userInfo === null) {
+        window.location.href = "/view/user/login"
         return null
     }
     let uid = userInfo['uid']
