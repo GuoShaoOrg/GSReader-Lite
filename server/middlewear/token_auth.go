@@ -3,6 +3,7 @@ package middlewear
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"gs-reader-lite/server/api/controller"
 	"gs-reader-lite/server/component"
 	"net/http"
@@ -29,33 +30,70 @@ var privateKey = "rsshub-tm01-12-1"
 func AuthToken() gin.HandlerFunc {
 	return func(request *gin.Context) {
 		authorization := request.GetHeader("Authorization")
-		authorizationArray := strings.Split(authorization, "@@")
-		ctx := context.Background()
-		if len(authorizationArray) < 2 {
-			component.Logger().Info(ctx, "Token or uid is null")
-			controller.JsonExitWithStatus(request, http.StatusUnauthorized, 0, "StatusUnauthorized", nil)
-			request.Abort()
-		}
-		token := authorizationArray[0]
-		uid := authorizationArray[1]
-		if len(token) < 0 || len(uid) < 0 {
-			component.Logger().Info(ctx, "AuthToken or uid is null")
+		token, uid, err := validateToken(request.Request.Context(), authorization)
+		if err != nil {
 			controller.JsonExitWithStatus(request, http.StatusUnauthorized, 0, "StatusUnauthorized", nil)
 			request.Abort()
 		}
 
 		if tokenModel, err := ParseToken(token); err != nil {
-			component.Logger().Info(ctx, "AuthToken invalid")
+			component.Logger().Info(request.Request.Context(), "AuthToken invalid")
 			controller.JsonExitWithStatus(request, http.StatusUnauthorized, 0, "StatusUnauthorized", nil)
 			request.Abort()
 		} else {
 			if tokenModel.UserId != uid {
-				component.Logger().Info(ctx, "token invalid tokenModel : ", tokenModel, " ,uid : ", uid)
+				component.Logger().Info(request.Request.Context(), "token invalid tokenModel : ", tokenModel, " ,uid : ", uid)
 				controller.JsonExitWithStatus(request, http.StatusUnauthorized, 0, "StatusUnauthorized", nil)
 				request.Abort()
 			}
 		}
 	}
+}
+
+func CookieToken() gin.HandlerFunc {
+	return func(request *gin.Context) {
+		authorization, err := request.Cookie("Auth")
+		if err != nil {
+			request.Params = append(request.Params, gin.Param{Key: "msg", Value: "您还没有登录"}, gin.Param{Key: "title", Value: "Error"})
+			request.Redirect(http.StatusTemporaryRedirect, "/view/user/login")
+			request.Abort()
+		}
+		token, uid, err := validateToken(request.Request.Context(), authorization)
+		if err != nil {
+			request.Params = append(request.Params, gin.Param{Key: "msg", Value: "您还没有登录"}, gin.Param{Key: "title", Value: "Error"})
+			request.Redirect(http.StatusTemporaryRedirect, "/view/user/login")
+			request.Abort()
+		}
+
+		if tokenModel, err := ParseToken(token); err != nil {
+			component.Logger().Info(request.Request.Context(), "AuthToken invalid")
+			request.Params = append(request.Params, gin.Param{Key: "msg", Value: "身份验证出错"}, gin.Param{Key: "title", Value: "Error"})
+			request.Redirect(http.StatusTemporaryRedirect, "/view/user/login")
+			request.Abort()
+		} else {
+			if tokenModel.UserId != uid {
+				component.Logger().Info(request.Request.Context(), "token invalid tokenModel : ", tokenModel, " ,uid : ", uid)
+				request.Params = append(request.Params, gin.Param{Key: "msg", Value: "身份验证出错"}, gin.Param{Key: "title", Value: "Error"})
+				request.Redirect(http.StatusTemporaryRedirect, "/view/user/login")
+				request.Abort()
+			}
+		}
+	}
+}
+
+func validateToken(cxt context.Context, authString string) (token, uid string, err error) {
+	authorizationArray := strings.Split(authString, "@@")
+	if len(authorizationArray) < 2 {
+		component.Logger().Info(cxt, "Token or uid is null")
+		return "", "", errors.New("Token or uid is null")
+	}
+	token = authorizationArray[0]
+	uid = authorizationArray[1]
+	if len(token) < 0 || len(uid) < 0 {
+		component.Logger().Info(cxt, "AuthToken or uid is null")
+		return "", "", errors.New("AuthToken or uid is null")
+	}
+	return token, uid, nil
 }
 
 func ParseToken(tokenString string) (*TokenModel, error) {

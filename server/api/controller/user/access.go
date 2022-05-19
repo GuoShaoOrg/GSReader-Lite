@@ -18,6 +18,7 @@ func (ctl *Controller) RegisterUser(req *gin.Context) {
 	if err != nil {
 		controller.JsonExit(req, 1, err.Error())
 	} else {
+		req.SetCookie("Auth", userInfo.Token+"@@"+userInfo.Uid, 0, "/", "", false, false)
 		controller.JsonExit(req, 0, "success", userInfo)
 	}
 

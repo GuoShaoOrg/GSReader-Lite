@@ -62,7 +62,7 @@ function getSubChannelListTmpl() {
         headers: {
             Authorization: getAuthToken()
         },
-        url: '/view/api/feed/sub_list',
+        url: '/view/feed/sub_list',
         data: {
             userId: userId,
             start: 0,

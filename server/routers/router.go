@@ -88,23 +88,19 @@ func initPages(router *gin.Engine) {
 	pagesGroup := router.Group("/view")
 	pageCtl := pages.PagesCtl
 	{
-		pagesGroup.GET("/", pageCtl.Index)
-		pagesGroup.GET("/add", pageCtl.AddChannel)
-		pagesGroup.GET("/search/", pageCtl.GetSearchPageTmpl)
+		pagesGroup.GET("/", middlewear.CookieToken(), pageCtl.Index)
+		pagesGroup.GET("/add", middlewear.CookieToken(), pageCtl.AddChannel)
+		pagesGroup.GET("/search/", middlewear.CookieToken(), pageCtl.GetSearchPageTmpl)
 
 		pagesGroup.GET("/user/login", pageCtl.Login)
 		pagesGroup.GET("/user/register", pageCtl.Register)
+		pagesGroup.GET("/error", pageCtl.Error)
 
-		pagesGroup.GET("/feed/channel/info/:channelId/:userId", pageCtl.GetFeedChannelPageTmpl)
-		pagesGroup.GET("/feed/channel/items/", pageCtl.GetFeedChannelItemListTmpl)
+		pagesGroup.GET("/feed/channel/info/:channelId/:userId", middlewear.CookieToken(), pageCtl.GetFeedChannelPageTmpl)
+		pagesGroup.GET("/feed/channel/items/", middlewear.CookieToken(), pageCtl.GetFeedChannelItemListTmpl)
+		pagesGroup.GET("/feed/all/item/list", middlewear.CookieToken(), pageCtl.UserAllFeedItemListTmpl)
+		pagesGroup.GET("/feed/sub_list", middlewear.CookieToken(), pageCtl.GetSubFeedChannelListTmpl)
+		pagesGroup.GET("/feed/search/result", middlewear.CookieToken(), pageCtl.GetSearchResultListTmpl)
 
-	}
-
-	pageAPIGroup := pagesGroup.Group("/api")
-	pageAPIGroup.Use(middlewear.AuthToken())
-	{
-		pageAPIGroup.GET("/feed/all/item/list", pageCtl.UserAllFeedItemListTmpl)
-		pageAPIGroup.GET("/feed/sub_list", pageCtl.GetSubFeedChannelListTmpl)
-		pageAPIGroup.GET("/feed/search/result", pageCtl.GetSearchResultListTmpl)
 	}
 }

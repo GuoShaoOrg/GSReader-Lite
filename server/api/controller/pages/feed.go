@@ -36,6 +36,15 @@ func (ctl *Controller) Index(req *gin.Context) {
 	req.HTML(http.StatusOK, "index.html", getCommonTemplateMap(templateMap))
 }
 
+func (ctl *Controller) Error(req *gin.Context) {
+	msg := req.Query("msg")
+	title := req.Query("title")
+	req.HTML(http.StatusOK, "base/error.html", gin.H{
+		"toolBarTitle": title,
+		"errorMsg":     msg,
+	})
+}
+
 func (ctl *Controller) AddChannel(req *gin.Context) {
 	templateMap := gin.H{
 		"feedDrawerTab": "add",
