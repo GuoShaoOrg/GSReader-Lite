@@ -56,12 +56,17 @@ func (ctl *Controller) MarkFeedItemByUserId(req *gin.Context) {
 		return
 	}
 
-	err := feed.MarkFeedItem(context.Background(), reqData.UserId, reqData.ItemId)
+	status, err := feed.MarkFeedItem(context.Background(), reqData.UserId, reqData.ItemId)
+	msg := "发生了一些问题"
 	if err != nil {
-		controller.JsonExit(req, 1, "failed")
+		controller.JsonExit(req, 1, msg)
 	}
-
-	controller.JsonExit(req, 0, "success", "")
+	if status == 1 {
+		msg = "收藏成功"
+	} else {
+		msg = "取消收藏"
+	}
+	controller.JsonExit(req, 0, msg, status)
 }
 
 func (ctl *Controller) GetMarkFeedItemListByUserId(req *gin.Context) {

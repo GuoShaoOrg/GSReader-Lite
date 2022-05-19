@@ -41,7 +41,7 @@ function isEmail(email) {
 }
 
 function isMobile(mobile) {
-    let reg=/^1[3-9]\d{9}$/
+    let reg = /^1[3-9]\d{9}$/
     return reg.test(mobile)
 }
 
@@ -70,6 +70,40 @@ function getSubChannelListTmpl() {
         },
         success: function (data) {
             $('#sub-channel-drawer-list').append(data)
+        }
+    });
+}
+
+function markedItem(id) {
+    let userInfo = getUserInfo()
+    let userId = ""
+    if (userInfo !== null) {
+        userId = userInfo.uid
+    }
+    let postData = {
+        userId: userId,
+        itemId: id,
+    }
+    $.ajax({
+        method: 'POST',
+        headers: {
+            Authorization: getAuthToken()
+        },
+        url: '/v1/api/feed/item/mark',
+        data: JSON.stringify(postData),
+        success: function (data) {
+            let jsonData = JSON.parse(data)
+            if (jsonData.error === 0) {
+                if (jsonData.data[0] === 1) {
+                    $('#marked-icon-' + id).addClass('mdui-text-color-theme')
+                } else {
+                    $('#marked-icon-' + id).removeClass('mdui-text-color-theme')
+                }
+            }
+            mdui.snackbar({
+                message: jsonData.msg,
+                position: 'top',
+            })
         }
     });
 }

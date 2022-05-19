@@ -24,9 +24,11 @@
     <div class="mdui-card-content mdui-ripple feed-item-description-tag" onclick="toItemSourcePage('{{ .Link }}')">{{.Description}}</div>
 
     <div class="mdui-card-actions">
-        <button class="mdui-btn mdui-ripple">
-            <i class="mdui-icon material-icons {{if .Marked}}mdui-text-color-theme{{end}}">favorite_border</i>
+        {{ if $.showMarked }}
+        <button class="mdui-btn mdui-ripple" onclick="markedItem('{{ .Id }}')">
+            <i class="mdui-icon material-icons {{if eq .Marked 1 }}mdui-text-color-theme{{end}}" id="marked-icon-{{ .Id }}">favorite_border</i>
         </button>
+        {{ end }}
         <button class="mdui-btn mdui-ripple"><i class="mdui-icon material-icons">share</i></button>
     </div>
 

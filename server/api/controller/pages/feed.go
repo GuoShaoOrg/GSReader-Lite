@@ -65,8 +65,9 @@ func (ctl *Controller) UserAllFeedItemListTmpl(req *gin.Context) {
 		message = "没有更多的文章了，请订阅更多的频道"
 	}
 	req.HTML(http.StatusOK, "feed/feedItemList.html", gin.H{
-		"items":   itemList,
-		"message": message,
+		"items":      itemList,
+		"message":    message,
+		"showMarked": true,
 	})
 }
 
@@ -115,8 +116,9 @@ func (ctl *Controller) GetFeedChannelItemListTmpl(req *gin.Context) {
 		message = "频道没有更多文章了"
 	}
 	req.HTML(http.StatusOK, "feed/feedItemList.html", gin.H{
-		"items":   channleItemList,
-		"message": message,
+		"items":      channleItemList,
+		"message":    message,
+		"showMarked": true,
 	})
 }
 
@@ -145,6 +147,7 @@ func (ctl *Controller) GetSearchResultListTmpl(req *gin.Context) {
 		"toolBarTitle":    "搜索",
 		"loadMoreBtnText": "正在加载...",
 		"title":           "锅烧阅读",
+		"showMarked":      true,
 		"message":         message,
 	})
 }
@@ -174,6 +177,7 @@ func (ctl *Controller) GetMarkedFeedItemListTmpl(req *gin.Context) {
 		"toolBarTitle":    "收藏",
 		"loadMoreBtnText": "正在加载...",
 		"title":           "锅烧阅读",
+		"showMarked":      false,
 		"message":         message,
 	})
 }
