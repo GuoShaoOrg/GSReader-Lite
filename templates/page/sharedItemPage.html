@@ -6,7 +6,10 @@
 <body class="mdui-drawer-body-left mdui-theme-primary-deep-orange">
     <!-- {{ template "base/drawer.html" .}} -->
     <div class="mdui-container-fluid" style="padding-left: 0px;padding-right: 0px;">
-        {{ template "base/toolbar.html" .}}
+        <!-- {{ template "base/toolbar.html" .}} -->
+        <div class="mdui-toolbar mdui-color-theme">
+            <a class="mdui-typo-title mdui-text-color-white mdui-center" href="/" id="share-toolbar-title">{{.toolBarTitle}}</a>
+        </div>
         <div class="mdui-center" style="padding-top: 56px;max-width: 800px">
             <div class="mdui-container">
                 {{ if .sharedItemInfo.Thumbnail }}
@@ -23,7 +26,10 @@
                     <div id="share-item-content" class="mdui-card-content mdui-ripple feed-item-description-tag"></div>
                 </div>
             </div>
-
+            <div class="mdui-typo" style="margin-top: 20px; margin-bottom: 20px;">
+                <hr />
+            </div>
+            <div style="width: 100%;text-align:center"><a class="mdui-center" href="/">{{ .homeLinkText }}</a></div>
             <div class="mdui-typo" style="margin-top: 20px; margin-bottom: 20px;">
                 <hr />
             </div>

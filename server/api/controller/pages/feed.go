@@ -198,6 +198,7 @@ func (ctl *Controller) GetFeedItemSharePageTmpl(req *gin.Context) {
 		"countMsg":        "共" + feedChannelInfo.Count + "篇文章",
 		"dateText":        "时间：" + sharedItemInfo.Date.Format("Y-m-d H:i"),
 		"authorText":      "作者：" + sharedItemInfo.Author,
+		"homeLinkText":    "前往主页浏览更多",
 	}
 	req.HTML(http.StatusOK, "page/sharedItemPage.html", getCommonTemplateMap(templateMap))
 }
