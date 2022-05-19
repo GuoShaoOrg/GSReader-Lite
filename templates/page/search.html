@@ -74,9 +74,14 @@
             searchItemStart = 0
             hasMoreItem = true
         }
-        function toItemSourcePage(link) {
-            window.open(link, '_blank')
-        }
+            function toItemSourcePage(link, id) {
+                if (id !== "") {
+                    window.location.href = "/view/feed/item/detail/" + id
+                } else {
+                    window.open(link, '_blank')
+                }
+
+            }
     </script>
 </body>
 

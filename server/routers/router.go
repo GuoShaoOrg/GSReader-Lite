@@ -93,11 +93,6 @@ func initPages(router *gin.Engine) {
 		pagesGroup.GET("/mark", middlewear.CookieToken(), pageCtl.GetMarkedFeedItemPageTmpl)
 		pagesGroup.GET("/search/", middlewear.CookieToken(), pageCtl.GetSearchPageTmpl)
 
-		pagesGroup.GET("/user/login", pageCtl.Login)
-		pagesGroup.GET("/user/register", pageCtl.Register)
-		pagesGroup.GET("/f/i/s/:id", pageCtl.GetFeedItemSharePageTmpl)
-		pagesGroup.GET("/error", pageCtl.Error)
-
 		pagesGroup.GET("/feed/channel/info/:channelId/:userId", middlewear.CookieToken(), pageCtl.GetFeedChannelPageTmpl)
 		pagesGroup.GET("/feed/channel/items/", middlewear.CookieToken(), pageCtl.GetFeedChannelItemListTmpl)
 		pagesGroup.GET("/feed/all/item/list", middlewear.CookieToken(), pageCtl.UserAllFeedItemListTmpl)
@@ -105,5 +100,10 @@ func initPages(router *gin.Engine) {
 		pagesGroup.GET("/feed/search/result", middlewear.CookieToken(), pageCtl.GetSearchResultListTmpl)
 		pagesGroup.GET("/feed/items/mark", middlewear.CookieToken(), pageCtl.GetMarkedFeedItemListTmpl)
 
+		pagesGroup.GET("/user/login", pageCtl.Login)
+		pagesGroup.GET("/user/register", pageCtl.Register)
+		pagesGroup.GET("/f/i/s/:id", pageCtl.GetFeedItemSharePageTmpl)
+		pagesGroup.GET("/error", pageCtl.Error)
+		pagesGroup.GET("/feed/item/detail/:id", pageCtl.GetFeedItemDetailPageTmpl)
 	}
 }

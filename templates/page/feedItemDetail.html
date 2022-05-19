@@ -1,0 +1,49 @@
+{{ define "page/feedItemDetail.html" }}
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+{{ template "base/header.html" .}}
+
+<body class="mdui-drawer-body-left mdui-theme-primary-deep-orange">
+	{{ template "base/toolbar.html" .}}
+	{{ template "base/drawer.html" .}}
+    <div class="mdui-container-fluid" style="padding-left: 0px;padding-right: 0px;">
+        <div class="mdui-center" style="padding-top: 56px;max-width: 800px">
+            <div class="mdui-container">
+                {{ if .item.Thumbnail }}
+                <img class="mdui-img-fluid" style="width: 100%; height: auto;" src="{{ .item.Thumbnail }}" />
+                {{ end }}
+                <div class="mdui-card" style="margin-top: 20px;">
+                    <div class="mdui-card-header">
+                        <img class="mdui-card-header-avatar"
+                            src="{{if .feedChannelInfo.ImageUrl}}{{.feedChannelInfo.ImageUrl}} {{else}}/public/favicon.ico{{end}}" />
+                        <a class="mdui-card-header-title" href="{{ .item.Link }}" target="_blank">{{
+                            .item.Title }}</a>
+                        <div class="mdui-card-header-subtitle">{{ .authorText }}&nbsp; / &nbsp;{{ .dateText }}</div>
+                    </div>
+                    <div id="item-detail-content" class="mdui-card-content mdui-ripple feed-item-description-tag"></div>
+
+                    
+                    <div class="mdui-card-actions">
+                        <a class="mdui-btn mdui-ripple" href="{{ .item.Link }}" target="_blank">{{ .linkText }}</a>
+                        <button class="mdui-btn mdui-ripple" onclick="share('{{ .Id }}')"><i
+                                class="mdui-icon material-icons">share</i></button>
+                        <textarea style="display: none;" id="clipboard-temp-holder-{{ .Id }}"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ template "index/script.html" }}
+    <script>
+        $("#item-detail-content").html('{{ .item.Content }}')
+        optimizeImg()
+        parseDescriptionStringToHtml()
+        function toItemSourcePage(link) {
+            window.open(link, '_blank')
+        }
+    </script>
+</body>
+
+</html>
+{{ end }}

@@ -21,7 +21,7 @@
         <img src="{{ .Thumbnail }}" alt="" />
     </div>
 
-    <div class="mdui-card-content mdui-ripple feed-item-description-tag" onclick="toItemSourcePage('{{ .Link }}')">{{.Description}}</div>
+    <div class="mdui-card-content mdui-ripple feed-item-description-tag" onclick="toItemSourcePage('{{ .Link }}', '{{ .Id }}')">{{.Description}}</div>
 
     <div class="mdui-card-actions">
         {{ if $.showMarked }}

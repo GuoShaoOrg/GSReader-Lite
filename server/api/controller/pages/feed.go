@@ -202,3 +202,19 @@ func (ctl *Controller) GetFeedItemSharePageTmpl(req *gin.Context) {
 	}
 	req.HTML(http.StatusOK, "page/sharedItemPage.html", getCommonTemplateMap(templateMap))
 }
+
+func (ctl *Controller) GetFeedItemDetailPageTmpl(req *gin.Context) {
+	id := req.Param("id")
+	uid := req.Param("uid")
+	itemDetailInfo := feed.GetFeedItemByItemId(req.Request.Context(), id, uid)
+
+	templateMap := gin.H{
+		"title":        itemDetailInfo.Title,
+		"toolBarTitle": "锅烧阅读",
+		"item":         itemDetailInfo,
+		"dateText":     "时间：" + itemDetailInfo.Date.Format("Y-m-d H:i"),
+		"authorText":   "作者：" + itemDetailInfo.Author,
+		"linkText":     "浏览原文",
+	}
+	req.HTML(http.StatusOK, "page/feedItemDetail.html", getCommonTemplateMap(templateMap))
+}

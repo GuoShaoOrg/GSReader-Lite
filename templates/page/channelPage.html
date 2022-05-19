@@ -51,9 +51,14 @@
                 }
             });
         }
-        function toItemSourcePage(link) {
-            window.open(link, '_blank')
-        }
+            function toItemSourcePage(link, id) {
+                if (id !== "") {
+                    window.location.href = "/view/feed/item/detail/" + id
+                } else {
+                    window.open(link, '_blank')
+                }
+
+            }
         function parseChannelItemsDescriptionStringToHtml() {
             $('#feed-channel-item-list').find('.feed-item-description-tag').each(function (index, element) {
                 $(this).html($(this).text())
