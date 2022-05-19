@@ -107,3 +107,40 @@ function markedItem(id) {
         }
     });
 }
+
+function share(id) {
+    let domain = window.location.host
+    let shareUrl = 'http://' + domain + '/view/f/i/s/' + id
+    $('#clipboard-temp-holder-' + id).text(shareUrl)
+    copyToClickBoard('clipboard-temp-holder-' + id)
+
+}
+
+function copyToClickBoard(elemId) {
+    var content = document.getElementById(elemId).innerHTML;
+    navigator.clipboard.writeText(content)
+        .then(() => {
+            mdui.snackbar({
+                message: '已复制到剪贴板',
+                position: 'top'
+            })
+        })
+        .catch(err => {
+            console.log('Something went wrong', err);
+        })
+}
+
+function optimizeImg() {
+    const img = document.querySelectorAll("img")
+    img.forEach(item => {
+        item.style.maxWidth = "100%"
+        item.style.height = "auto"
+    })
+    const divs = document.querySelectorAll("div")
+    divs.forEach(item => {
+        if (item.style.width.replace("px", "") > window.innerWidth) {
+            item.style.maxWidth = "100%"
+            item.style.height = "auto"
+        }
+    })
+}

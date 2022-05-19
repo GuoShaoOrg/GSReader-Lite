@@ -10,7 +10,7 @@
         <div class="mdui-center" style="padding-top: 56px;max-width: 800px">
             <div class="mdui-container">
                 {{ if .sharedItemInfo.Thumbnail }}
-                    <img class="mdui-img-fluid" style="width: 100%; height: auto;" src="{{ .sharedItemInfo.Thumbnail }}" />
+                <img class="mdui-img-fluid" style="width: 100%; height: auto;" src="{{ .sharedItemInfo.Thumbnail }}" />
                 {{ end }}
                 <div class="mdui-card" style="margin-top: 20px;">
                     <div class="mdui-card-header">
@@ -50,6 +50,8 @@
     <script>
         $("#share-item-content").html('{{ .sharedItemInfo.Content }}')
         $('#menu-btn').hide()
+        optimizeImg()
+        parseDescriptionStringToHtml()
         function toItemSourcePage(link) {
             window.open(link, '_blank')
         }

@@ -18,7 +18,7 @@
     </div>
 
     <div class="mdui-card-media">
-        <img src="{{.Thumbnail}}" alt="" />
+        <img src="{{ .Thumbnail }}" alt="" />
     </div>
 
     <div class="mdui-card-content mdui-ripple feed-item-description-tag" onclick="toItemSourcePage('{{ .Link }}')">{{.Description}}</div>
@@ -29,7 +29,8 @@
             <i class="mdui-icon material-icons {{if eq .Marked 1 }}mdui-text-color-theme{{end}}" id="marked-icon-{{ .Id }}">favorite_border</i>
         </button>
         {{ end }}
-        <button class="mdui-btn mdui-ripple"><i class="mdui-icon material-icons">share</i></button>
+        <button class="mdui-btn mdui-ripple" onclick="share('{{ .Id }}')"><i class="mdui-icon material-icons">share</i></button>
+        <textarea style="display: none;" id="clipboard-temp-holder-{{ .Id }}"></textarea>
     </div>
 
 </div>
