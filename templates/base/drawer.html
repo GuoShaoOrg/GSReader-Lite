@@ -19,11 +19,11 @@
                 id="drawer-search-item-icon">search</i>
             <a href="/view/search" class="mdui-list-item-content">{{.searchTitle}}</a>
         </li>
-        <li class='mdui-list-item mdui-ripple {{ if eq .feedDrawerTab "fav"}}mdui-list-item-active{{ end }}'
-            id="drawer-fav-item">
-            <i class='mdui-list-item-icon mdui-icon material-icons {{ if eq .feedDrawerTab "fav"}}mdui-text-color-theme{{ end }}'
-                id="drawer-fav-item-icon">favorite_border</i>
-            <a href="/view/fav" class="mdui-list-item-content">{{.favTitle}}</a>
+        <li class='mdui-list-item mdui-ripple {{ if eq .feedDrawerTab "mark"}}mdui-list-item-active{{ end }}'
+            id="drawer-mark-item">
+            <i class='mdui-list-item-icon mdui-icon material-icons {{ if eq .feedDrawerTab "mark"}}mdui-text-color-theme{{ end }}'
+                id="drawer-mark-item-icon">favorite_border</i>
+            <a href="/view/mark" class="mdui-list-item-content">{{.favTitle}}</a>
         </li>
         <li class='mdui-list-item mdui-ripple {{ if eq .feedDrawerTab "add"}}mdui-list-item-active{{ end }}'
             id="drawer-add-item">

@@ -1,0 +1,74 @@
+{{ define "page/markedItemPage.html" }}
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+{{ template "base/header.html" .}}
+
+<body class="mdui-drawer-body-left mdui-theme-primary-deep-orange">
+    {{ template "base/drawer.html" .}}
+    <div class="mdui-container-fluid" style="padding-left: 0px;padding-right: 0px;">
+        {{ template "base/toolbar.html" .}}
+        <div class="mdui-center" style="padding-top: 56px;max-width: 800px">
+            <div class="mdui-container">
+                {{ template "component/commonItemList.html" .}}
+            </div>
+        </div>
+    </div>
+
+    {{ template "index/script.html" }}
+    <script>
+        getSubChannelListTmpl()
+        let searchItemStart = 0
+        let searchItemSize = 10
+        let hasMoreItem = true
+        $('#load-more-items').hide()
+
+        window.addEventListener('scroll', () => {
+            if (document.documentElement.scrollHeight - document.documentElement.clientHeight - document.documentElement.scrollTop < 1) {
+                if (hasMoreItem) {
+                    loadFeedItem()
+                }
+            }
+        })
+        loadFeedItem()
+        function loadFeedItem() {
+            $('#load-more-items').show()
+            let userInfo = getUserInfo()
+            let userId = ""
+            if (userInfo !== null) {
+                userId = userInfo.uid
+            }
+            $.ajax({
+                method: 'GET',
+                headers: {
+                    Authorization: getAuthToken()
+                },
+                url: '/view/feed/items/mark',
+                data: {
+                    userId: userId,
+                    start: searchItemStart,
+                    size: searchItemSize
+                },
+                success: function (data) {
+                    if (data.includes('id="no-more-items"')) {
+                        $('#load-more-items').hide()
+                        hasMoreItem = false
+                    }
+                    $('#feed-item-list').append(data)
+                    parseDescriptionStringToHtml()
+                    searchItemStart = searchItemStart + 10
+                }
+            });
+        }
+        function cleanSearchResult() {
+            $('#feed-item-list').empty()
+            searchItemStart = 0
+            hasMoreItem = true
+        }
+        function toItemSourcePage(link) {
+            window.open(link, '_blank')
+        }
+    </script>
+</body>
+
+</html>
+{{ end }}

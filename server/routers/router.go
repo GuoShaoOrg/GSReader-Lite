@@ -53,22 +53,22 @@ func initV1API(router *gin.Engine) {
 	feedGroup := authorized.Group("/feed")
 	{
 		// feed channel
-		feedGroup.GET("/channel_by_tag", feed.FeedCtl.GetFeedChannelByTag)
-		feedGroup.GET("/channel_info_by_id", feed.FeedCtl.GetFeedChannelInfoByChannelAndUserId)
-		feedGroup.GET("/channel_catalog_list_by_tag", feed.FeedCtl.GetFeedChannelCatalogListByTag)
-		feedGroup.GET("/channel_by_user_id", feed.FeedCtl.GetSubFeedChannelByUserId)
-		feedGroup.POST("/sub_channel_by_user_id", feed.FeedCtl.SubChannelByUserIdAndChannelId)
-		feedGroup.GET("/channel_catalog_list_by_user_id", feed.FeedCtl.GetFeedChannelCatalogListByUserId)
+		feedGroup.GET("/channel/by_tag", feed.FeedCtl.GetFeedChannelByTag)
+		feedGroup.GET("/channel/by_uid", feed.FeedCtl.GetFeedChannelInfoByChannelAndUserId)
+		feedGroup.GET("/channel/catalogs/by_tag", feed.FeedCtl.GetFeedChannelCatalogListByTag)
+		feedGroup.GET("/channel/sub/", feed.FeedCtl.GetSubFeedChannelByUserId)
+		feedGroup.POST("/channel/sub/uid", feed.FeedCtl.SubChannelByUserIdAndChannelId)
+		feedGroup.GET("/channel/catalogs/by_uid", feed.FeedCtl.GetFeedChannelCatalogListByUserId)
 		feedGroup.POST("/link/uid", feed.FeedCtl.AddFeedChannelByLink)
 		// feed item
 		feedGroup.GET("/latest", feed.FeedCtl.GetLatestFeedItem)
 		feedGroup.GET("/random", feed.FeedCtl.GetRandomFeedItem)
 		feedGroup.GET("/search", feed.FeedCtl.SearchFeedItem)
-		feedGroup.GET("/item_by_user_id", feed.FeedCtl.GetFeedItemListByUserId)
-		feedGroup.GET("/item_by_channel_id", feed.FeedCtl.GetFeedItemByChannelId)
-		feedGroup.GET("/item_by_item_id", feed.FeedCtl.GetFeedItemByItemId)
-		feedGroup.POST("/mark_feed_item_by_user_id", feed.FeedCtl.MarkFeedItemByUserId)
-		feedGroup.GET("/mark_feed_item_by_user_id", feed.FeedCtl.MarkFeedItemByUserId)
+		feedGroup.GET("/item/by_uid", feed.FeedCtl.GetFeedItemListByUserId)
+		feedGroup.GET("/item/cid", feed.FeedCtl.GetFeedItemByChannelId)
+		feedGroup.GET("/item/id", feed.FeedCtl.GetFeedItemByItemId)
+		feedGroup.POST("/item/mark", feed.FeedCtl.MarkFeedItemByUserId)
+		feedGroup.GET("/item/mark", feed.FeedCtl.GetMarkFeedItemListByUserId)
 	}
 }
 
@@ -90,6 +90,7 @@ func initPages(router *gin.Engine) {
 	{
 		pagesGroup.GET("/", middlewear.CookieToken(), pageCtl.Index)
 		pagesGroup.GET("/add", middlewear.CookieToken(), pageCtl.AddChannel)
+		pagesGroup.GET("/mark", middlewear.CookieToken(), pageCtl.GetMarkedFeedItemPageTmpl)
 		pagesGroup.GET("/search/", middlewear.CookieToken(), pageCtl.GetSearchPageTmpl)
 
 		pagesGroup.GET("/user/login", pageCtl.Login)
@@ -101,6 +102,7 @@ func initPages(router *gin.Engine) {
 		pagesGroup.GET("/feed/all/item/list", middlewear.CookieToken(), pageCtl.UserAllFeedItemListTmpl)
 		pagesGroup.GET("/feed/sub_list", middlewear.CookieToken(), pageCtl.GetSubFeedChannelListTmpl)
 		pagesGroup.GET("/feed/search/result", middlewear.CookieToken(), pageCtl.GetSearchResultListTmpl)
+		pagesGroup.GET("/feed/items/mark", middlewear.CookieToken(), pageCtl.GetMarkedFeedItemListTmpl)
 
 	}
 }
