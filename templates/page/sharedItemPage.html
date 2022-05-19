@@ -1,0 +1,60 @@
+{{ define "page/sharedItemPage.html" }}
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+{{ template "base/header.html" .}}
+
+<body class="mdui-drawer-body-left mdui-theme-primary-deep-orange">
+    <!-- {{ template "base/drawer.html" .}} -->
+    <div class="mdui-container-fluid" style="padding-left: 0px;padding-right: 0px;">
+        {{ template "base/toolbar.html" .}}
+        <div class="mdui-center" style="padding-top: 56px;max-width: 800px">
+            <div class="mdui-container">
+                {{ if .sharedItemInfo.Thumbnail }}
+                    <img class="mdui-img-fluid" style="width: 100%; height: auto;" src="{{ .sharedItemInfo.Thumbnail }}" />
+                {{ end }}
+                <div class="mdui-card" style="margin-top: 20px;">
+                    <div class="mdui-card-header">
+                        <img class="mdui-card-header-avatar"
+                            src="{{if .feedChannelInfo.ImageUrl}}{{.feedChannelInfo.ImageUrl}} {{else}}/public/favicon.ico{{end}}" />
+                        <a class="mdui-card-header-title" href="{{ .sharedItemInfo.Link }}" target="_blank">{{
+                            .sharedItemInfo.Title }}</a>
+                        <div class="mdui-card-header-subtitle">{{ .authorText }}&nbsp; / &nbsp;{{ .dateText }}</div>
+                    </div>
+                    <div id="share-item-content" class="mdui-card-content mdui-ripple feed-item-description-tag"></div>
+                </div>
+            </div>
+
+            <div class="mdui-typo" style="margin-top: 20px; margin-bottom: 20px;">
+                <hr />
+            </div>
+            <div class="mdui-container">
+                <img class="mdui-center mdui-img-circle" style="width: 80px;margin-top: 35px;"
+                    src="{{if .feedChannelInfo.ImageUrl}}{{.feedChannelInfo.ImageUrl}} {{else}}/public/favicon.ico{{end}}" />
+                <div class="mdui-typo mdui-center" style="text-align:center">
+                    <div class="mdui-typo-title">{{ .feedChannelInfo.Title }}</div>
+                    <div class="mdui-typo-caption">{{ .feedChannelInfo.ChannelDesc }}</div>
+                    <div class="mdui-typo-caption">{{ .countMsg }}</div>
+                </div>
+            </div>
+            <div class="mdui-container">
+                <div class="mdui-container" id="home-container">
+                    <ul class="mdui-list" id="feed-item-list">
+                        {{ template "component/feedItemList.html" .}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ template "index/script.html" }}
+    <script>
+        $("#share-item-content").html('{{ .sharedItemInfo.Content }}')
+        $('#menu-btn').hide()
+        function toItemSourcePage(link) {
+            window.open(link, '_blank')
+        }
+    </script>
+</body>
+
+</html>
+{{ end }}

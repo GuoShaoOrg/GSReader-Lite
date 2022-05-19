@@ -228,7 +228,7 @@ func GetChannelInfoByChannelAndUserId(ctx context.Context, userId, channelId str
 		Joins("left join user_sub_channel usc on usc.channel_id=rfc.id and usc.user_id="+"'"+userId+"'").
 		Select("rfc.*, usc.status as sub").
 		Where("rfc.id", channelId).
-		Find(&feedInfo); err != nil {
+		Find(&feedInfo).Error; err != nil {
 		component.Logger().Error(ctx, err)
 		return
 	}

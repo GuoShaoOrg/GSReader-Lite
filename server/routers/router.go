@@ -95,6 +95,7 @@ func initPages(router *gin.Engine) {
 
 		pagesGroup.GET("/user/login", pageCtl.Login)
 		pagesGroup.GET("/user/register", pageCtl.Register)
+		pagesGroup.GET("/f/i/s/:id", pageCtl.GetFeedItemSharePageTmpl)
 		pagesGroup.GET("/error", pageCtl.Error)
 
 		pagesGroup.GET("/feed/channel/info/:channelId/:userId", middlewear.CookieToken(), pageCtl.GetFeedChannelPageTmpl)

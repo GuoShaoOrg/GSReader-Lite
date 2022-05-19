@@ -64,7 +64,7 @@ func (ctl *Controller) UserAllFeedItemListTmpl(req *gin.Context) {
 	if len(itemList) == 0 {
 		message = "没有更多的文章了，请订阅更多的频道"
 	}
-	req.HTML(http.StatusOK, "feed/feedItemList.html", gin.H{
+	req.HTML(http.StatusOK, "component/feedItemList.html", gin.H{
 		"items":      itemList,
 		"message":    message,
 		"showMarked": true,
@@ -115,7 +115,7 @@ func (ctl *Controller) GetFeedChannelItemListTmpl(req *gin.Context) {
 	if len(channleItemList) == 0 {
 		message = "频道没有更多文章了"
 	}
-	req.HTML(http.StatusOK, "feed/feedItemList.html", gin.H{
+	req.HTML(http.StatusOK, "component/feedItemList.html", gin.H{
 		"items":      channleItemList,
 		"message":    message,
 		"showMarked": true,
@@ -142,7 +142,7 @@ func (ctl *Controller) GetSearchResultListTmpl(req *gin.Context) {
 	if len(resultList) == 0 {
 		message = "没有更多文章了"
 	}
-	req.HTML(http.StatusOK, "feed/feedItemList.html", gin.H{
+	req.HTML(http.StatusOK, "component/feedItemList.html", gin.H{
 		"items":           resultList,
 		"toolBarTitle":    "搜索",
 		"loadMoreBtnText": "正在加载...",
@@ -172,7 +172,7 @@ func (ctl *Controller) GetMarkedFeedItemListTmpl(req *gin.Context) {
 	if len(resultList) == 0 {
 		message = "没有更多文章了"
 	}
-	req.HTML(http.StatusOK, "feed/feedItemList.html", gin.H{
+	req.HTML(http.StatusOK, "component/feedItemList.html", gin.H{
 		"items":           resultList,
 		"toolBarTitle":    "收藏",
 		"loadMoreBtnText": "正在加载...",
@@ -180,4 +180,24 @@ func (ctl *Controller) GetMarkedFeedItemListTmpl(req *gin.Context) {
 		"showMarked":      false,
 		"message":         message,
 	})
+}
+
+func (ctl *Controller) GetFeedItemSharePageTmpl(req *gin.Context) {
+	id := req.Param("id")
+	uid := req.Param("uid")
+	sharedItemInfo := feed.GetFeedItemByItemId(req.Request.Context(), id, uid)
+	feedChannelInfo := feed.GetChannelInfoByChannelAndUserId(req.Request.Context(), uid, sharedItemInfo.ChannelId)
+	feedItemList := feed.GetFeedItemByChannelId(req.Request.Context(), 0, 10, sharedItemInfo.ChannelId, uid)
+
+	templateMap := gin.H{
+		"title":           sharedItemInfo.Title,
+		"toolBarTitle":    "锅烧阅读",
+		"sharedItemInfo":  sharedItemInfo,
+		"feedChannelInfo": feedChannelInfo,
+		"items":           feedItemList,
+		"countMsg":        "共" + feedChannelInfo.Count + "篇文章",
+		"dateText":        "时间：" + sharedItemInfo.Date.Format("Y-m-d H:i"),
+		"authorText":      "作者：" + sharedItemInfo.Author,
+	}
+	req.HTML(http.StatusOK, "page/sharedItemPage.html", getCommonTemplateMap(templateMap))
 }
