@@ -25,9 +25,9 @@
                     
                     <div class="mdui-card-actions">
                         <a class="mdui-btn mdui-ripple" href="{{ .item.Link }}" target="_blank">{{ .linkText }}</a>
-                        <button class="mdui-btn mdui-ripple" onclick="share('{{ .Id }}')"><i
+                        <button class="mdui-btn mdui-ripple" onclick="share('{{ .item.Id }}')"><i
                                 class="mdui-icon material-icons">share</i></button>
-                        <textarea style="display: none;" id="clipboard-temp-holder-{{ .Id }}"></textarea>
+                        <textarea style="display: none;" id="clipboard-temp-holder-{{ .item.Id }}"></textarea>
                     </div>
                 </div>
             </div>
