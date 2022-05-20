@@ -16,6 +16,7 @@ func doSync(f func()) {
 		var freshStartTime = time.Now()
 		var refreshHoldTime = time.Minute * 40
 		var ctx = context.Background()
+		time.Sleep(time.Minute)
 		component.Logger().Info(ctx, "Start Feed sync job")
 		for {
 			freshStartTime = time.Now()
