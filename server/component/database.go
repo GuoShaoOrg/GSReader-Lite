@@ -3,6 +3,7 @@ package component
 import (
 	"context"
 	"database/sql"
+	"gs-reader-lite/server/config"
 	"os"
 
 	"github.com/gogf/gf/v2/os/gfile"
@@ -56,9 +57,12 @@ func createSQLITEIfNotExist(ctx context.Context) {
 		Logger().Error(ctx, err)
 		panic(err)
 	}
-	sql_table := gfile.GetContents("./server/config/schema.sql")
+	sql_table, err := config.ConfigFS.ReadFile("schema.sql")
+	if err !=nil {
+		Logger().Error(ctx, err)
+	}
 
-	_, err = db.Exec(sql_table)
+	_, err = db.Exec(string(sql_table))
 	if err != nil {
 		Logger().Error(ctx, err)
 		panic(err)
