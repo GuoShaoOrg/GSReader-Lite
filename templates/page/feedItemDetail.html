@@ -39,6 +39,7 @@
         $("#item-detail-content").html('{{ .item.Content }}')
         optimizeImg()
         parseDescriptionStringToHtml()
+        getSubChannelListTmpl()
         function toItemSourcePage(link) {
             window.open(link, '_blank')
         }
