@@ -3,8 +3,8 @@
     <ul class="mdui-list" mdui-collapse="{accordion: true}" id="drawer-list">
         <li class="mdui-subheader">{{.userSubHeader}}</li>
         <li class="mdui-list-item mdui-ripple">
-            <i class="mdui-list-item-icon mdui-icon material-icons">account_circle</i>
-            <a class="mdui-list-item-content" id="drawer-username"></a>
+            <img src="/public/favicon.ico" style="width: 24px;height: 24px;" />
+            <a class="mdui-list-item-content" style="margin-left: 32px;" id="drawer-username"></a>
         </li>
         <li class="mdui-subheader">Feed</li>
         <li class='mdui-list-item mdui-ripple {{ if eq .feedDrawerTab "home"}}mdui-list-item-active{{ end }}'
