@@ -287,7 +287,7 @@ func AddFeedChannelByLink(ctx context.Context, userID, rssLink string) (err erro
 	}
 
 	if rssResp = component.GetContent(rssLink); rssResp == "" {
-		err = errors.New("获取RSS链接失败")
+		err = errors.New("获取RSS内容失败")
 		return err
 	} else {
 		var (
