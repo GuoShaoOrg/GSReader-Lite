@@ -52,7 +52,7 @@
 				success: function (data) {
 					$('#feed-item-list').append(data)
 					if (data.includes('id="no-more-items"')) {
-						$('#feed-item-list').append(data)
+						$('#load-more-items').hide()
 						hasMoreItem = false
 						return
 					}
