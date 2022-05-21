@@ -3,11 +3,9 @@ package feed
 import (
 	"context"
 	"gs-reader-lite/server/component"
-	"gs-reader-lite/server/lib"
 	"gs-reader-lite/server/model"
 	"gs-reader-lite/server/model/biz"
 	"strconv"
-	"strings"
 
 	"github.com/gogf/gf/v2/encoding/ghash"
 	"github.com/gogf/gf/v2/os/gtime"
@@ -71,15 +69,17 @@ func AddFeedChannelAndItem(ctx context.Context, rssLink string, feed feeds.Feed)
 			feedItemFTS.Author = item.Author.Name
 		}
 		feedItemFTS.Id = feedItemID
-		jieba := lib.GetJieBa()
-		titleSPArr := jieba.CutForSearch(feedItemFTS.Title, true)
-		feedItemFTS.TitleSP = strings.Join(titleSPArr, " ")
+		// TODO Workaround for https://github.com/yanyiwu/gojieba/issues/81
+		// jieba := lib.GetJieBa()
+		// titleSPArr := jieba.CutForSearch(feedItemFTS.Title, true)
+		// feedItemFTS.TitleSP = strings.Join(titleSPArr, " ")
 
-		contentSPArr := jieba.CutForSearch(feedItemFTS.Content, true)
-		feedItemFTS.ContentSP = strings.Join(contentSPArr, " ")
+		// contentSPArr := jieba.CutForSearch(feedItemFTS.Content, true)
+		// feedItemFTS.ContentSP = strings.Join(contentSPArr, " ")
 
-		descriptionSPArr := jieba.CutForSearch(feedItemFTS.Description, true)
-		feedItemFTS.DescriptionSP = strings.Join(descriptionSPArr, " ")
+		// descriptionSPArr := jieba.CutForSearch(feedItemFTS.Description, true)
+		// feedItemFTS.DescriptionSP = strings.Join(descriptionSPArr, " ")
+		// TODO Workaround end
 
 		feedItemFTSModeList = append(feedItemFTSModeList, feedItemFTS)
 	}
@@ -296,8 +296,11 @@ func SearchFeedItem(ctx context.Context, userId, keyword string, start, size int
 		size = 10
 	}
 
-	keywordArray := lib.GetJieBa().CutForSearch(keyword, true)
-	queryKeyword := strings.Join(keywordArray, " ")
+	// TODO Workaround for https://github.com/yanyiwu/gojieba/issues/81
+	// keywordArray := lib.GetJieBa().CutForSearch(keyword, true)
+	// queryKeyword := strings.Join(keywordArray, " ")
+	// queryString := "(SELECT id FROM rss_feed_item_fts fts WHERE description_sp MATCH ? OR content_sp MATCH ? OR title_sp MATCH ? LIMIT ? OFFSET ?)"
+	// TODO Workaround end
 	queryString := "(SELECT id FROM rss_feed_item_fts fts WHERE description_sp MATCH ? OR content_sp MATCH ? OR title_sp MATCH ? LIMIT ? OFFSET ?)"
 
 	if err := component.GetDatabase().Table("rss_feed_item rfi").
@@ -306,7 +309,7 @@ func SearchFeedItem(ctx context.Context, userId, keyword string, start, size int
 		Joins("left join user_mark_feed_item umfi on umfi.channel_item_id=rfi.id").
 		Joins("inner join rss_feed_channel rfc on usc.channel_id=rfc.id").
 		Where("usc.user_id = ? and usc.status = 1", userId).
-		Where("rfi.id in "+queryString, queryKeyword, queryKeyword, queryKeyword, size, start).
+		Where("rfi.id in "+queryString, keyword, keyword, keyword, size, start).
 		Order("rfi.input_date desc").
 		Limit(size).
 		Offset(start).
