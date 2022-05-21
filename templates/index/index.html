@@ -50,6 +50,7 @@
 					size: itemSize
 				},
 				success: function (data) {
+					$('#feed-item-list').append(data)
 					if (data.includes('id="no-more-items"')) {
 						$('#feed-item-list').append(data)
 						hasMoreItem = false
