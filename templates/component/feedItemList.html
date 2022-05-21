@@ -12,24 +12,31 @@
 
     <div class="mdui-card-header">
         <img class="mdui-card-header-avatar"
-            src="{{if .ChannelImageUrl}}{{.ChannelImageUrl}} {{else}}/public/favicon.ico{{end}}"  onclick="toFeedChannelPage('{{.ChannelId}}')"/>
+            src="{{if .ChannelImageUrl}}{{.ChannelImageUrl}} {{else}}/public/favicon.ico{{end}}"
+            onclick="toFeedChannelPage('{{.ChannelId}}')" />
         <a class="mdui-card-header-title" href="{{ .Link }}" target="_blank">{{.Title}}</a>
         <div class="mdui-card-header-subtitle" onclick="toFeedChannelPage('{{.ChannelId}}')">{{.ChannelTitle}}</div>
     </div>
-
+    <div class="mdui-card-content" style="padding-top: 0px; padding-bottom: 0px;">
+        <div class="mdui-typo-caption-opacity">{{ .Author }}</div>
+        <div class="mdui-typo-caption-opacity">{{ .InputDate }}</div>
+    </div>
     <div class="mdui-card-media mdui-center">
         <img src="{{ .Thumbnail }}" alt="" />
     </div>
 
-    <div class="mdui-card-content mdui-ripple feed-item-description-tag" style="max-height: 300px;" onclick="toItemSourcePage('{{ .Link }}', '{{ .Id }}')">{{.Description}}</div>
+    <div class="mdui-card-content mdui-ripple feed-item-description-tag" style="max-height: 300px;"
+        onclick="toItemSourcePage('{{ .Link }}', '{{ .Id }}')">{{.Description}}</div>
 
     <div class="mdui-card-actions">
         {{ if $.showMarked }}
         <button class="mdui-btn mdui-ripple" onclick="markedItem('{{ .Id }}')">
-            <i class="mdui-icon material-icons {{if eq .Marked 1 }}mdui-text-color-theme{{end}}" id="marked-icon-{{ .Id }}">favorite_border</i>
+            <i class="mdui-icon material-icons {{if eq .Marked 1 }}mdui-text-color-theme{{end}}"
+                id="marked-icon-{{ .Id }}">favorite_border</i>
         </button>
         {{ end }}
-        <button class="mdui-btn mdui-ripple" onclick="share('{{ .Id }}')"><i class="mdui-icon material-icons">share</i></button>
+        <button class="mdui-btn mdui-ripple" onclick="share('{{ .Id }}')"><i
+                class="mdui-icon material-icons">share</i></button>
         <textarea style="display: none;" id="clipboard-temp-holder-{{ .Id }}"></textarea>
     </div>
 

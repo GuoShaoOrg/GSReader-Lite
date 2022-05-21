@@ -64,8 +64,31 @@ func (ctl *Controller) UserAllFeedItemListTmpl(req *gin.Context) {
 	if len(itemList) == 0 {
 		message = "没有更多的文章了，请订阅更多的频道"
 	}
+
+	items := make([]FeedItemType, 0)
+	for i := 0; i < len(itemList); i++ {
+		item := FeedItemType{
+			Id:              itemList[i].Id,
+			ChannelId:       itemList[i].ChannelId,
+			Title:           itemList[i].Title,
+			Description:     itemList[i].Description,
+			Link:            itemList[i].Link,
+			Content:         itemList[i].Content,
+			Thumbnail:       itemList[i].Thumbnail,
+			Date:            "发布于：" + itemList[i].Date.Format("Y-m-d H:i"),
+			Author:          "作者：" + itemList[i].Author,
+			InputDate:       "发布于：" + itemList[i].InputDate.Format("Y-m-d H:i"),
+			RssLink:         itemList[i].RssLink,
+			ChannelImageUrl: itemList[i].ChannelImageUrl,
+			ChannelTitle:    itemList[i].ChannelTitle,
+			Marked:          itemList[i].Marked,
+			Sub:             itemList[i].Sub,
+		}
+		items = append(items, item)
+	}
+
 	req.HTML(http.StatusOK, "component/feedItemList.html", gin.H{
-		"items":      itemList,
+		"items":      items,
 		"message":    message,
 		"showMarked": true,
 	})
@@ -110,13 +133,36 @@ func (ctl *Controller) GetFeedChannelItemListTmpl(req *gin.Context) {
 	if reqData.Size == 0 {
 		reqData.Size = 10
 	}
-	channleItemList := feed.GetFeedItemByChannelId(req.Request.Context(), reqData.Start, reqData.Size, reqData.ChannelId, reqData.UserId)
+	itemList := feed.GetFeedItemByChannelId(req.Request.Context(), reqData.Start, reqData.Size, reqData.ChannelId, reqData.UserId)
 	var message string
-	if len(channleItemList) == 0 {
+	if len(itemList) == 0 {
 		message = "频道没有更多文章了"
 	}
+
+	items := make([]FeedItemType, 0)
+	for i := 0; i < len(itemList); i++ {
+		item := FeedItemType{
+			Id:              itemList[i].Id,
+			ChannelId:       itemList[i].ChannelId,
+			Title:           itemList[i].Title,
+			Description:     itemList[i].Description,
+			Link:            itemList[i].Link,
+			Content:         itemList[i].Content,
+			Thumbnail:       itemList[i].Thumbnail,
+			Date:            "发布于：" + itemList[i].Date.Format("Y-m-d H:i"),
+			Author:          "作者：" + itemList[i].Author,
+			InputDate:       "发布于：" + itemList[i].InputDate.Format("Y-m-d H:i"),
+			RssLink:         itemList[i].RssLink,
+			ChannelImageUrl: itemList[i].ChannelImageUrl,
+			ChannelTitle:    itemList[i].ChannelTitle,
+			Marked:          itemList[i].Marked,
+			Sub:             itemList[i].Sub,
+		}
+		items = append(items, item)
+	}
+
 	req.HTML(http.StatusOK, "component/feedItemList.html", gin.H{
-		"items":      channleItemList,
+		"items":      items,
 		"message":    message,
 		"showMarked": true,
 	})
@@ -137,13 +183,36 @@ func (ctl *Controller) GetSearchResultListTmpl(req *gin.Context) {
 	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
 	}
-	resultList := feed.SearchFeedItem(req.Request.Context(), reqData.UserId, reqData.Keyword, reqData.Start, reqData.Size)
+	itemList := feed.SearchFeedItem(req.Request.Context(), reqData.UserId, reqData.Keyword, reqData.Start, reqData.Size)
 	var message string
-	if len(resultList) == 0 {
+	if len(itemList) == 0 {
 		message = "没有更多文章了"
 	}
+
+	items := make([]FeedItemType, 0)
+	for i := 0; i < len(itemList); i++ {
+		item := FeedItemType{
+			Id:              itemList[i].Id,
+			ChannelId:       itemList[i].ChannelId,
+			Title:           itemList[i].Title,
+			Description:     itemList[i].Description,
+			Link:            itemList[i].Link,
+			Content:         itemList[i].Content,
+			Thumbnail:       itemList[i].Thumbnail,
+			Date:            "发布于：" + itemList[i].Date.Format("Y-m-d H:i"),
+			Author:          "作者：" + itemList[i].Author,
+			InputDate:       "发布于：" + itemList[i].InputDate.Format("Y-m-d H:i"),
+			RssLink:         itemList[i].RssLink,
+			ChannelImageUrl: itemList[i].ChannelImageUrl,
+			ChannelTitle:    itemList[i].ChannelTitle,
+			Marked:          itemList[i].Marked,
+			Sub:             itemList[i].Sub,
+		}
+		items = append(items, item)
+	}
+
 	req.HTML(http.StatusOK, "component/feedItemList.html", gin.H{
-		"items":           resultList,
+		"items":           items,
 		"toolBarTitle":    "搜索",
 		"loadMoreBtnText": "正在加载...",
 		"title":           "锅烧阅读",
@@ -167,13 +236,36 @@ func (ctl *Controller) GetMarkedFeedItemListTmpl(req *gin.Context) {
 	if err := ctl.BaseController.ValidateQuery(req, &reqData); err != nil {
 		return
 	}
-	resultList := feed.GetMarkedFeedItemListByUserId(req.Request.Context(), reqData.UserId, reqData.Start, reqData.Size)
+	itemList := feed.GetMarkedFeedItemListByUserId(req.Request.Context(), reqData.UserId, reqData.Start, reqData.Size)
 	var message string
-	if len(resultList) == 0 {
+	if len(itemList) == 0 {
 		message = "没有更多文章了"
 	}
+
+	items := make([]FeedItemType, 0)
+	for i := 0; i < len(itemList); i++ {
+		item := FeedItemType{
+			Id:              itemList[i].Id,
+			ChannelId:       itemList[i].ChannelId,
+			Title:           itemList[i].Title,
+			Description:     itemList[i].Description,
+			Link:            itemList[i].Link,
+			Content:         itemList[i].Content,
+			Thumbnail:       itemList[i].Thumbnail,
+			Date:            "发布于：" + itemList[i].Date.Format("Y-m-d H:i"),
+			Author:          "作者：" + itemList[i].Author,
+			InputDate:       "发布于：" + itemList[i].InputDate.Format("Y-m-d H:i"),
+			RssLink:         itemList[i].RssLink,
+			ChannelImageUrl: itemList[i].ChannelImageUrl,
+			ChannelTitle:    itemList[i].ChannelTitle,
+			Marked:          itemList[i].Marked,
+			Sub:             itemList[i].Sub,
+		}
+		items = append(items, item)
+	}
+
 	req.HTML(http.StatusOK, "component/feedItemList.html", gin.H{
-		"items":           resultList,
+		"items":           itemList,
 		"toolBarTitle":    "收藏",
 		"loadMoreBtnText": "正在加载...",
 		"title":           "锅烧阅读",
@@ -196,7 +288,7 @@ func (ctl *Controller) GetFeedItemSharePageTmpl(req *gin.Context) {
 		"feedChannelInfo": feedChannelInfo,
 		"items":           feedItemList,
 		"countMsg":        "共" + feedChannelInfo.Count + "篇文章",
-		"dateText":        "时间：" + sharedItemInfo.Date.Format("Y-m-d H:i"),
+		"dateText":        "发布于：" + sharedItemInfo.Date.Format("Y-m-d H:i"),
 		"authorText":      "作者：" + sharedItemInfo.Author,
 		"homeLinkText":    "前往主页浏览更多",
 	}
