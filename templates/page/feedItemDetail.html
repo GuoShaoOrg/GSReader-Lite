@@ -36,7 +36,7 @@
 
     {{ template "index/script.html" }}
     <script>
-        $("#item-detail-content").html('{{ .item.Content }}')
+        $("#item-detail-content").html('{{ if .item.Content }}{{ .item.Content }}{{else}}{{ .item.Description }}{{ end }}')
         optimizeImg()
         parseDescriptionStringToHtml()
         getSubChannelListTmpl()

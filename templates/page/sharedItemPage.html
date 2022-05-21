@@ -54,7 +54,7 @@
 
     {{ template "index/script.html" }}
     <script>
-        $("#share-item-content").html('{{ .sharedItemInfo.Content }}')
+        $("#share-item-content").html('{{ if .sharedItemInfo.Content }}{{ .sharedItemInfo.Content }}{{else}}{{ .sharedItemInfo.Description }}{{ end }}')
         $('#menu-btn').hide()
         optimizeImg()
         parseDescriptionStringToHtml()
