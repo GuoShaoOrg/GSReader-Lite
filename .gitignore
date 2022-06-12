@@ -1,5 +1,4 @@
 .vscode/
-go.sum
 .idea/
 db.sqlite3
 log
