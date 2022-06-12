@@ -286,55 +286,58 @@ func AddFeedChannelByLink(ctx context.Context, userID, rssLink string) (err erro
 		}
 	}
 
-	if rssResp = component.GetContent(rssLink); rssResp == "" {
-		err = errors.New("获取RSS内容失败")
-		return err
-	} else {
-		var (
-			goFeed *gofeed.Feed
-			feedID string
-		)
-		goFeed, err = lib.ParseRSSFeed(rssResp)
+	grPool := component.GetPool()
+	grPool.Add(ctx, func(ctx context.Context) {
+
+		if rssResp = component.GetContent(rssLink); rssResp == "" {
+			err = errors.New("获取RSS内容失败")
+		} else {
+			var (
+				goFeed *gofeed.Feed
+				feedID string
+			)
+			goFeed, err = lib.ParseRSSFeed(rssResp)
+			if err != nil {
+				component.Logger().Error(ctx, err)
+				err = errors.New("解析RSS链接失败")
+			}
+			rssFeedChannelMode.Title = goFeed.Title
+			if goFeed.Image != nil {
+				rssFeedChannelMode.ImageUrl = goFeed.Image.URL
+			}
+			rssFeedChannelMode.ChannelDesc = goFeed.Description
+			rssFeedChannelMode.Link = goFeed.Link
+			rssFeedChannelMode.RssLink = rssLink
+			feedID = strconv.FormatUint(ghash.RS64([]byte(rssFeedChannelMode.Link+rssFeedChannelMode.Title)), 32)
+			rssFeedChannelMode.Id = feedID
+
+			userSubChannel.ChannelId = feedID
+			userSubChannel.UserId = userID
+			userSubChannel.Status = 1
+			userSubChannel.InputTime = gtime.Now()
+		}
+
+		err = component.GetDatabase().Transaction(func(tx *gorm.DB) error {
+			var (
+				tranErr error
+			)
+
+			tranErr = tx.Create(&rssFeedChannelMode).Error
+			if tranErr != nil {
+				return tranErr
+			}
+
+			tranErr = tx.Create(&userSubChannel).Error
+			if tranErr != nil {
+				return tranErr
+			}
+
+			return tranErr
+		})
 		if err != nil {
-			component.Logger().Error(ctx, err)
-			err = errors.New("解析RSS链接失败")
-			return err
+			component.Logger().Error(ctx, "insert rss feed data failed : ", err)
 		}
-		rssFeedChannelMode.Title = goFeed.Title
-		if goFeed.Image != nil {
-			rssFeedChannelMode.ImageUrl = goFeed.Image.URL
-		}
-		rssFeedChannelMode.ChannelDesc = goFeed.Description
-		rssFeedChannelMode.Link = goFeed.Link
-		rssFeedChannelMode.RssLink = rssLink
-		feedID = strconv.FormatUint(ghash.RS64([]byte(rssFeedChannelMode.Link+rssFeedChannelMode.Title)), 32)
-		rssFeedChannelMode.Id = feedID
-
-		userSubChannel.ChannelId = feedID
-		userSubChannel.UserId = userID
-		userSubChannel.Status = 1
-		userSubChannel.InputTime = gtime.Now()
-	}
-
-	err = component.GetDatabase().Transaction(func(tx *gorm.DB) error {
-		var (
-			tranErr error
-		)
-
-		tranErr = tx.Create(&rssFeedChannelMode).Error
-		if tranErr != nil {
-			return tranErr
-		}
-
-		tranErr = tx.Create(&userSubChannel).Error
-		if tranErr != nil {
-			return tranErr
-		}
-
-		return tranErr
 	})
-	if err != nil {
-		component.Logger().Error(ctx, "insert rss feed data failed : ", err)
-	}
+
 	return
 }

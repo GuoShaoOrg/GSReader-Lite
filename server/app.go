@@ -1,8 +1,8 @@
 package server
 
 import (
-	"gs-reader-lite/server/api/jobs"
 	"gs-reader-lite/server/component"
+	"gs-reader-lite/server/jobs"
 	"gs-reader-lite/server/routers"
 )
 

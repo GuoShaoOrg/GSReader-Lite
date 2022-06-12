@@ -308,7 +308,7 @@ func SearchFeedItem(ctx context.Context, userId, keyword string, start, size int
 		Joins("inner join user_sub_channel usc on usc.channel_id=rfi.channel_id").
 		Joins("left join user_mark_feed_item umfi on umfi.channel_item_id=rfi.id").
 		Joins("inner join rss_feed_channel rfc on usc.channel_id=rfc.id").
-		Where("usc.user_id = ? and usc.status = 1", userId).
+		Where("usc.user_id = ?", userId).
 		Where("rfi.id in "+queryString, keyword, keyword, keyword, size, start).
 		Order("rfi.input_date desc").
 		Limit(size).

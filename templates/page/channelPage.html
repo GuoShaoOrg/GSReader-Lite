@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 {{ template "base/header.html" .}}
+
 <body class="mdui-theme-primary-deep-orange">
     <div class="mdui-appbar" style="position: fixed; top: 0;z-index: 1001; width: 100%;">
         <div class="mdui-toolbar mdui-color-theme">
@@ -29,7 +30,17 @@
     <script>
         var itemStart = 0
         var itemSize = 10
+        let hasMoreItem = true
         loadFeedChannelItem()
+
+        window.addEventListener('scroll', () => {
+            if (document.documentElement.scrollHeight - document.documentElement.clientHeight - document.documentElement.scrollTop < 1) {
+                if (hasMoreItem) {
+                    loadFeedChannelItem()
+                }
+            }
+        })
+
         function loadFeedChannelItem() {
             userInfo = getUserInfo()
             $.ajax({
@@ -42,24 +53,26 @@
                     channelId: '{{.channelInfo.Id}}'
                 },
                 success: function (data) {
+                    $('#feed-channel-item-list').append(data)
                     if (data.includes('id="no-more-items"')) {
                         $('#feed-channel-item-load-more').hide()
+                        hasMoreItem = false
+                        return
                     }
-                    $('#feed-channel-item-list').append(data)
                     parseChannelItemsDescriptionStringToHtml()
                     optimizeImg()
                     itemStart = itemStart + 10
                 }
             });
         }
-            function toItemSourcePage(link, id) {
-                if (id !== "") {
-                    window.location.href = "/view/feed/item/detail/" + id
-                } else {
-                    window.open(link, '_blank')
-                }
-
+        function toItemSourcePage(link, id) {
+            if (id !== "") {
+                window.location.href = "/view/feed/item/detail/" + id
+            } else {
+                window.open(link, '_blank')
             }
+
+        }
         function parseChannelItemsDescriptionStringToHtml() {
             $('#feed-channel-item-list').find('.feed-item-description-tag').each(function (index, element) {
                 $(this).html($(this).text())
