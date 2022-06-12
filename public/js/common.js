@@ -48,7 +48,10 @@ function isMobile(mobile) {
 
 function parseDescriptionStringToHtml() {
     $('#feed-item-list').find('.feed-item-description-tag').each(function (index, element) {
-        $(this).html($(this).text())
+        if (!$(this).hasClass('parsed')) {
+            $(this).html($(this).text())
+            $(this).addClass('parsed')
+        }
     })
 }
 
