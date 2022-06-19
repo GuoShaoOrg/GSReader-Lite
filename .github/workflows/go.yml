@@ -23,13 +23,6 @@ jobs:
 
     - name: Build
       run: bash build.sh
-    - name: Update Release
-      id: update_release
-      uses: tubone24/update_release@v1.0
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-      with:
-        body: "Release Latest Version"
     - name: Upload Release Asset
       uses: svenstaro/upload-release-action@v2
       with:
