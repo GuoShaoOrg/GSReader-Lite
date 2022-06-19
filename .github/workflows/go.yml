@@ -2,40 +2,33 @@ name: Go
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Go
-      uses: actions/setup-go@v3
-      with:
-        go-version: 1.18
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
 
-    - name: Mod Tidy
-      run: go mod tidy
+      - name: Mod Tidy
+        run: go mod tidy
 
-    - name: Build
-      run: bash build.sh
-    - name: Update Release
-      id: update_release
-      uses: tubone24/update_release@v1.0
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-      with:
-        body: "Release Latest Version"
-    - name: Upload Release Asset
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: gs-reader-lite
-        asset_name: gs-reader-lite
-        tag: Latest
-        overwrite: true
-        body: "Release Latest Version"
+      - name: Build
+        run: bash build.sh
+
+      - name: Upload Release Asset
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: gs-reader-lite
+          asset_name: gs-reader-lite
+          tag: Latest
+          overwrite: true
+          body: "Release Latest Version"
